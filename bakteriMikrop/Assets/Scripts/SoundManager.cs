@@ -25,6 +25,8 @@ public class SoundManager : MonoBehaviour
     public AudioClip ClickSesi;
     public AudioClip[] popSesi;
     public AudioClip[] geriKapanmaSesi;
+    public AudioClip[] pokemonBaslangicSesi;
+    public AudioClip[] pokemonBitmeSesi;
     
     //Awake
     private void Awake()
@@ -90,5 +92,17 @@ public class SoundManager : MonoBehaviour
     {
         //Play a random sound from the array of sounds
         sfxSource.PlayOneShot(geriKapanmaSesi[Random.Range(0, geriKapanmaSesi.Length)], sfxVolume);
+    }
+    
+    public void PlayPokemonBaslangicSesi()
+    {
+        //Play a random sound from the array of sounds
+        sfxSource.PlayOneShot(pokemonBaslangicSesi[Random.Range(0, pokemonBaslangicSesi.Length)], sfxVolume);
+    }
+    
+    public void PlayPokemonBitmeSesi()
+    {
+        //Play a random sound from the array of sounds
+        sfxSource.PlayOneShot(pokemonBitmeSesi[Random.Range(0, pokemonBitmeSesi.Length)], sfxVolume);
     }
 }

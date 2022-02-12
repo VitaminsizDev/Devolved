@@ -22,6 +22,7 @@ public class UIController : MonoBehaviour
     public GameObject evrimSecmeEkrani;
     public GameObject kucukEvrim;
     public CanvasGroup arkaPlan;
+    public GameObject pokemonPanel;
     
     private Tween evrimHazirSallaDnaTween;
     private Tween evrimPaneliHepAcikTween;
@@ -48,6 +49,16 @@ public class UIController : MonoBehaviour
         
         //Setup Vignette
         vignette = postProcessing.profile.components[0] as Vignette;
+    }
+    
+    //Update
+    private void Update()
+    {
+        //On ESC Button Click call pokemonAnimasyon
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            PokemonAnimasyon();
+        }
     }
     
     //
@@ -92,13 +103,19 @@ public class UIController : MonoBehaviour
         evrimIcinGerekenDnaText.text = "Evrim Zamanı!!";
         evrimSecmeEkrani.SetActive(true);
         
+        Transform secmePanel = evrimSecmeEkrani.transform.GetChild(0).Find("SecmePanel");
+        Transform secButon = evrimSecmeEkrani.transform.Find("EvrimSecButon");
+        
         //Sequence
         Sequence sequence = DOTween.Sequence();
         sequence.AppendCallback(() => VignetteAcKapa(true));
         sequence.Append(arkaPlan.DOFade(1, 1f));
         sequence.AppendCallback(() => SoundManager.instance.PlayBuyukEvrilmeSesi());
+        sequence.AppendCallback(() => secmePanel.gameObject.SetActive(true));
         sequence.Join(evrimSecmeEkrani.GetComponent<CanvasGroup>().DOFade(1, 0.2f));
+        sequence.Join(secmePanel.GetComponent<CanvasGroup>().DOFade(1, 0.2f));
         sequence.Join(evrimSecmeEkrani.transform.DOShakeScale(0.2f, new Vector3(0.1f, 0.1f, 0.1f)));
+        sequence.AppendCallback(() => secButon.gameObject.SetActive(true));
         sequence.Play();
     }
     
@@ -171,5 +188,43 @@ public class UIController : MonoBehaviour
         if(ac) DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 1, 1.3f);
         else DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0, 0.7f);
     }
-    
+
+    public void PokemonAnimasyon()
+    {
+        /*Tween panelScale = evrimSecmeEkrani.transform.DOScale(new Vector3(1.05f, 1.05f, 1), 1f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
+        Tween panelRotate = evrimSecmeEkrani.transform.DORotate(new Vector3(0, 0, 3), 2).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
+        panelScale.Pause();
+        panelRotate.Pause();*/
+        //Find child with name "SecmePanel"
+        Transform secmePanel = evrimSecmeEkrani.transform.GetChild(0).Find("SecmePanel");
+        Transform pokemonAnimPanel = evrimSecmeEkrani.transform.GetChild(0).Find("PokemonAnim");
+        Transform secButon = evrimSecmeEkrani.transform.Find("EvrimSecButon");
+        
+        
+        var suankiPokemon = pokemonPanel.transform.GetChild(0).GetComponent<RectTransform>();
+        var upgradePokemon = pokemonPanel.transform.GetChild(1).GetComponent<RectTransform>();
+        Sequence sequence = DOTween.Sequence();
+        sequence.AppendCallback(() => pokemonAnimPanel.gameObject.SetActive(true));
+        sequence.AppendCallback(() => secButon.gameObject.SetActive(false));
+        sequence.Append(secmePanel.GetComponent<CanvasGroup>().DOFade(0, 0.5f));
+        sequence.Join(pokemonAnimPanel.GetComponent<CanvasGroup>().DOFade(1, 0.5f));
+        sequence.AppendCallback(() => secmePanel.gameObject.SetActive(false));
+        sequence.AppendCallback(() => SoundManager.instance.PlayPokemonBaslangicSesi());
+        sequence.Join(suankiPokemon.DOLocalMove(Vector2.zero, 2f).SetEase(Ease.OutBounce));
+        sequence.Join(upgradePokemon.DOLocalMove(Vector2.zero, 2f).SetEase(Ease.OutBounce));
+        sequence.Join(upgradePokemon.DOScale(new Vector3(0,0,0), 2.5f).SetEase(Ease.InFlash));
+        sequence.Join(suankiPokemon.DOScale(new Vector3(0,0,0), 2.5f).SetEase(Ease.InFlash));
+        sequence.AppendCallback(() => suankiPokemon.gameObject.SetActive(false));
+        sequence.AppendCallback(() => SoundManager.instance.PlayPokemonBitmeSesi());
+        sequence.Join(upgradePokemon.DOScale(new Vector3(1,1,0), 0.3f).SetEase(Ease.Linear));
+        /*sequence.Append(evrimSecmeEkrani.transform.DORotate(new Vector3(0, 0, -3), 1).SetEase(Ease.Linear));
+        sequence.AppendCallback(() => panelScale.Play());
+        sequence.AppendCallback(() => panelRotate.Play());*/
+        sequence.AppendInterval(1.5f);
+        sequence.AppendCallback(() => EvrimSecimEkraniKapat());
+        sequence.Join(pokemonAnimPanel.GetComponent<CanvasGroup>().DOFade(1, 0.2f));
+        sequence.AppendCallback(() => pokemonAnimPanel.gameObject.SetActive(false));
+        sequence.Play();
+
+    }
 }
