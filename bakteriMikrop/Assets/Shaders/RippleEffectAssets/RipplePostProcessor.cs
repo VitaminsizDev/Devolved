@@ -3,6 +3,7 @@
 [RequireComponent(typeof(Camera))]
 public class RipplePostProcessor : MonoBehaviour
 {
+    public Transform player;
     /// <summary>
     /// Singleton reference to access RipplePostProcessor anywhere.
     /// You can change this to any other kind of reference that works for your project.
@@ -40,7 +41,10 @@ public class RipplePostProcessor : MonoBehaviour
     public void Ripple()
     {
         CurrentAmount = MaxAmount;
-        Vector2 pos = new Vector2(Screen.width, Screen.height) / 2f;
+        //Finds player's pos in screen space in vector2
+        Vector2 pos = Camera.main.WorldToScreenPoint(player.position);
+        
+        //Vector2 pos = new Vector2(Screen.width, Screen.height) / 2f;
         RippleMaterial.SetFloat("_CenterX", pos.x);
         RippleMaterial.SetFloat("_CenterY", pos.y);
         _update = true;

@@ -15,15 +15,11 @@ public class Evrim : MonoBehaviour
 
     public Transform respawnpos;
     public BacteriaStats bStats;
-    public Volume postProcessing;
     public GameObject player;
-    private Vignette vignette;
 
     private void Awake()
     {
         ResetEvrim();
-        //Get vignte effect from post processing
-        vignette = postProcessing.profile.components[0] as Vignette;
     }
 
     //Start
@@ -48,17 +44,7 @@ public class Evrim : MonoBehaviour
         bStats.UpgradedZiplamaLimiti += buElToplananDnaSayisi * yukariHareketArtisMiktari;
         totalToplananDnaSayisi += buElToplananDnaSayisi;
         buElToplananDnaSayisi = 0;
-
-        #region VignettePos
-
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(player.transform.position);
-        Vector2 screenPosScale = new Vector2(screenPos.x /Screen.width, screenPos.y/Screen.height);
-        vignette.center.value = screenPosScale;
-
-        #endregion
-        
-        
-        DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 1, 1.3f).OnComplete(Respawn);
+        UIController.instance.EvrimSecimEkraniAc();
     }
 
     public void CollectDna()
@@ -78,16 +64,6 @@ public class Evrim : MonoBehaviour
     //Respawn player
     public void Respawn()
     {
-        
-        #region VignettePos
-
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(respawnpos.position);
-        Vector2 screenPosScale = new Vector2(screenPos.x /Screen.width, screenPos.y/Screen.height);
-        vignette.center.value = screenPosScale;
-
-        #endregion
         player.transform.position = respawnpos.position;
-        DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0, 0.7f);
-        
     }
 }

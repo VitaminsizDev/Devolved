@@ -16,6 +16,7 @@ public class Toplanabilir : MonoBehaviour
             if (isDna)
             {
                 evrim.CollectDna();
+                Camera.main.GetComponent<RipplePostProcessor>().Ripple();
                 this.gameObject.SetActive(false);
             }
         }
