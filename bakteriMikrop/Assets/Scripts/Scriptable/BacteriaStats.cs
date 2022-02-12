@@ -10,5 +10,17 @@ public class BacteriaStats : ScriptableObject
     
     public float UpgradedHareketHizi;
     public float UpgradedZiplamaLimiti;
-    
+    [Header("BuyukZiplama")]
+    public float buyukziplamavelo;
+    public float dashTime;
+    public float maxHoldTime;
+    public float dashCooldown;
+    public float dashEndYMultiplier;
+    public float drag;
+    [Header("CollisionSenses")]
+    public LayerMask whatIsGround;
+    public float groundCheckRadius;
+    public float wallCheckDistance;
+
+
 }

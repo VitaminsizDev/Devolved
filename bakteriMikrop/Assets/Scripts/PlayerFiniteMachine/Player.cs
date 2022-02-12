@@ -1,0 +1,173 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+    //states
+    public PlayerStateMachine StateMachine { get; private set; }
+
+    public PlayerIdle IdleState { get; private set; }
+    public PlayerMove MoveState { get; private set; }
+    public PlayerSuzulme suzulmeState { get; private set; }
+    public PlayerFall fallState { get; private set; }
+    public PlayerDuvarTutanma duvarstate { get; private set; }
+    public PlayerBuyukZiplama buyukziplama { get; private set; }
+
+
+    //components
+    public SpriteRenderer visual;
+    [SerializeField]
+    private Transform WallCheck;
+    [SerializeField]
+    private Transform GroundCheck;
+    [SerializeField]
+    private Transform CeilingCheck;
+    [SerializeField]
+    private BacteriaStats playerData;
+    public PlayerInputHandler InputHandler { get; private set; }
+    public Rigidbody2D RB { get; private set; }
+    public Transform DashDirectionIndicator;
+    //
+    [Header("Evrimler")]
+    public bool duvartutun;
+    public bool buyukzipla;
+
+
+
+    //variable
+    public bool CanSetVelocity { get; set; }
+    public int FacingDirection;
+
+    public Vector2 CurrentVelocity { get; private set; }
+
+    private Vector2 workspace;
+    // Start is called before the first frame update
+
+    //gozlem
+    public string currentstate;
+    protected  void Awake()
+    {
+       
+        StateMachine = new PlayerStateMachine();
+
+        IdleState = new PlayerIdle(this, StateMachine, playerData);
+        MoveState = new PlayerMove(this, StateMachine, playerData);
+        suzulmeState = new PlayerSuzulme(this, StateMachine, playerData);
+        fallState = new PlayerFall(this, StateMachine, playerData);
+        duvarstate = new PlayerDuvarTutanma(this, StateMachine, playerData);
+        buyukziplama = new PlayerBuyukZiplama(this, StateMachine, playerData);
+
+   
+    }
+    private void Start()
+    {
+        RB = GetComponentInParent<Rigidbody2D>();
+
+        FacingDirection = 1;
+        CanSetVelocity = true;
+        InputHandler = GetComponent<PlayerInputHandler>();
+        StateMachine.Initialize(IdleState);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        currentstate = StateMachine.CurrentState.ToString();
+        CurrentVelocity = RB.velocity;
+        StateMachine.CurrentState.LogicUpdate();
+    }
+  
+
+    private void FixedUpdate()
+    {
+ 
+        StateMachine.CurrentState.PhysicsUpdate();
+    }
+    #region digerfonk
+    private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
+
+    private void AnimtionFinishTrigger() => StateMachine.CurrentState.AnimationFinishTrigger();
+    #endregion
+
+    #region colision
+    public bool Ceiling
+    {
+        get => Physics2D.OverlapCircle(CeilingCheck.position, playerData.groundCheckRadius, playerData.whatIsGround);
+    }
+
+    public bool Ground
+    {
+        get => Physics2D.OverlapCircle(GroundCheck.position, playerData.groundCheckRadius, playerData.whatIsGround);
+    }
+
+    public bool WallFront
+    {
+        get => Physics2D.Raycast(WallCheck.position, Vector2.right * FacingDirection, playerData.wallCheckDistance, playerData.whatIsGround);
+    }
+
+    public bool WallBack
+    {
+        get => Physics2D.Raycast(WallCheck.position, Vector2.right * -FacingDirection, playerData.wallCheckDistance, playerData.whatIsGround);
+    }
+
+    #endregion
+
+    #region move
+    public void SetVelocity(float velocity, Vector2 direction)
+    {
+        workspace = direction * velocity;
+        SetFinalVelocity();
+    }
+    public void SetVelocity(float velocity, Vector2 angle, int direction)
+    {
+        angle.Normalize();
+        workspace.Set(angle.x * velocity * direction, angle.y * velocity);
+        SetFinalVelocity();
+    }
+    public void SetVelocityX(float velocity)
+    {
+        workspace.Set(velocity, CurrentVelocity.y);
+        SetFinalVelocity();
+    }
+    public void SetVelocityY(float velocity)
+    {
+        workspace.Set(CurrentVelocity.x, velocity);
+        SetFinalVelocity();
+    }
+    public void SetVelocityZero()
+    {
+        workspace = Vector2.zero;
+        SetFinalVelocity();
+    }
+    private void SetFinalVelocity()
+    {
+        if (CanSetVelocity)
+        {
+            RB.velocity = workspace;
+            CurrentVelocity = workspace;
+        }
+    }
+    public void CheckIfShouldFlip(int xInput)
+    {
+        if (xInput != 0 && xInput != FacingDirection)
+        {
+            Flip();
+        }
+    }
+
+    public void Flip()
+    {
+        FacingDirection *= -1;
+        RB.transform.Rotate(0.0f, 180.0f, 0.0f);
+    }
+    #endregion
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(GroundCheck.position, playerData.groundCheckRadius);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(WallCheck.position, new Vector3 (WallCheck.position.x+ playerData.wallCheckDistance, WallCheck.position.y));
+    }
+}

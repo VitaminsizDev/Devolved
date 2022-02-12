@@ -12,7 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eff390091d416824887caa3f7cbe1f67, type: 3}
   m_Name: BakteriStat
   m_EditorClassIdentifier: 
-  baseHareketHizi: 2
+  baseHareketHizi: 3
   baseZiplamaLimiti: 3
-  UpgradedHareketHizi: 4
-  UpgradedZiplamaLimiti: 4
+  UpgradedHareketHizi: 0
+  UpgradedZiplamaLimiti: 0
+  buyukziplamavelo: 0
+  dashTime: 0
+  maxHoldTime: 0
+  dashCooldown: 0
+  dashEndYMultiplier: 0
+  drag: 0
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 8
+  groundCheckRadius: 0.14
+  wallCheckDistance: 0.6
