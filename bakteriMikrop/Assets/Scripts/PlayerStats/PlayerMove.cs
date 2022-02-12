@@ -30,6 +30,7 @@ public class PlayerMove : PlayerState
     public override void Enter()
     {
         base.Enter();
+        player.duvarstate.ResetTutun();
         player.buyukziplama.ResetCanDash();
         moveTweener.Restart();
 

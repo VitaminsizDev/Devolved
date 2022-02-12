@@ -29,6 +29,7 @@ public class PlayerIdle : PlayerState
     public override void Enter()
     {
         base.Enter();
+        player.duvarstate.ResetTutun();
         player.buyukziplama.ResetCanDash();
         player.SetVelocityX(0f);
         

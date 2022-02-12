@@ -17,6 +17,9 @@ public class BacteriaStats : ScriptableObject
     public float dashCooldown;
     public float dashEndYMultiplier;
     public float drag;
+    [Header("BuyukZiplama")]
+    public float Duvartutunmasure;
+    public float UpgradedDuvartutunmasure;
     [Header("CollisionSenses")]
     public LayerMask whatIsGround;
     public float groundCheckRadius;

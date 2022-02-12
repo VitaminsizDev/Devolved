@@ -66,7 +66,7 @@ public class PlayerSuzulme : PlayerState
             {
                 stateMachine.ChangeState(player.fallState);
             }
-            else if (player.duvartutun && isTouchingWall && player.FacingDirection==xInput &&!player.Ground)
+            else if (player.duvartutun && isTouchingWall && player.FacingDirection==xInput &&!player.Ground && player.duvarstate.tutun)
             {
                 stateMachine.ChangeState(player.duvarstate);
             }
