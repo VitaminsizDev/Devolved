@@ -20,9 +20,11 @@ public class SoundManager : MonoBehaviour
     public AudioClip musicClip;
     public AudioClip menuClip;
     public AudioClip[] DnaToplamaSesi;
-    public AudioClip[] KucukEvrilmeSesi;
-    public AudioClip[] BuyukEvrilmeSesi;
+    public AudioClip KucukEvrilmeSesi;
+    public AudioClip BuyukEvrilmeSesi;
     public AudioClip ClickSesi;
+    public AudioClip[] popSesi;
+    public AudioClip[] geriKapanmaSesi;
     
     //Awake
     private void Awake()
@@ -64,14 +66,12 @@ public class SoundManager : MonoBehaviour
     
     public void PlayKucukEvrilmeSesi()
     {
-        //Play a random sound from the array of sounds
-        sfxSource.PlayOneShot(KucukEvrilmeSesi[Random.Range(0, KucukEvrilmeSesi.Length)], sfxVolume);
+        sfxSource.PlayOneShot(KucukEvrilmeSesi, sfxVolume);
     }
     
     public void PlayBuyukEvrilmeSesi()
     {
-        //Play a random sound from the array of sounds
-        sfxSource.PlayOneShot(BuyukEvrilmeSesi[Random.Range(0, BuyukEvrilmeSesi.Length)], sfxVolume);
+        sfxSource.PlayOneShot(BuyukEvrilmeSesi, sfxVolume);
     }
     
     public void PlayClickSesi()
@@ -80,4 +80,15 @@ public class SoundManager : MonoBehaviour
         sfxSource.PlayOneShot(ClickSesi, sfxVolume);
     }
     
+    public void PlayPopSesi()
+    {
+        //Play a random sound from the array of sounds
+        sfxSource.PlayOneShot(popSesi[Random.Range(0, popSesi.Length)], sfxVolume);
+    }
+    
+    public void PlayGeriKapanmaSesi()
+    {
+        //Play a random sound from the array of sounds
+        sfxSource.PlayOneShot(geriKapanmaSesi[Random.Range(0, geriKapanmaSesi.Length)], sfxVolume);
+    }
 }
