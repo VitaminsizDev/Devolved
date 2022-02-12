@@ -44,7 +44,8 @@ public class Evrim : MonoBehaviour
         bStats.UpgradedZiplamaLimiti += buElToplananDnaSayisi * yukariHareketArtisMiktari;
         totalToplananDnaSayisi += buElToplananDnaSayisi;
         buElToplananDnaSayisi = 0;
-        UIController.instance.EvrimSecimEkraniAc();
+        if(totalToplananDnaSayisi >= 3) UIController.instance.EvrimSecimEkraniAc();
+        else UIController.instance.KucukEvrimGecir();
     }
 
     public void CollectDna()
@@ -65,5 +66,6 @@ public class Evrim : MonoBehaviour
     public void Respawn()
     {
         player.transform.position = respawnpos.position;
+        UIController.instance.UpdateEvrimIcinGerekenDnaText(3-buElToplananDnaSayisi);
     }
 }

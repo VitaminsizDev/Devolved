@@ -20,6 +20,8 @@ public class UIController : MonoBehaviour
     public TextMeshProUGUI evrimIcinGerekenDnaText;
     public TMP_ColorGradient evrimIcinGerekenDnaColor;
     public GameObject evrimSecmeEkrani;
+    public GameObject kucukEvrim;
+    public CanvasGroup arkaPlan;
     
     private Tween evrimHazirSallaDnaTween;
     private Tween evrimPaneliHepAcikTween;
@@ -91,7 +93,7 @@ public class UIController : MonoBehaviour
         evrimSecmeEkrani.SetActive(true);
         Sequence sequence = DOTween.Sequence();
         sequence.AppendCallback(() => VignetteAcKapa(true));
-        sequence.Append(evrimSecmeEkrani.transform.Find("ArkaPlan").gameObject.GetComponent<CanvasGroup>().DOFade(1, 1f));
+        sequence.Append(arkaPlan.DOFade(1, 1f));
         sequence.Append(evrimSecmeEkrani.GetComponent<CanvasGroup>().DOFade(1, 0.2f));
         sequence.Join(evrimSecmeEkrani.transform.DOShakeScale(0.2f, new Vector3(0.1f, 0.1f, 0.1f)));
         sequence.Play();
@@ -103,9 +105,35 @@ public class UIController : MonoBehaviour
         sequence.AppendCallback(() => evrim.Respawn());
         sequence.AppendCallback(() => VignettePosBul());
         sequence.Append(evrimSecmeEkrani.GetComponent<CanvasGroup>().DOFade(0, 0.2f));
-        sequence.Append(evrimSecmeEkrani.transform.Find("ArkaPlan").gameObject.GetComponent<CanvasGroup>().DOFade(0, 0.5f));
+        sequence.Append(arkaPlan.DOFade(0, 0.5f));
         sequence.AppendCallback(() => evrimSecmeEkrani.SetActive(false));
         sequence.AppendCallback(() => VignetteAcKapa(false));
+        sequence.Play();
+    }
+
+    public void KucukEvrimGecir()
+    {
+        evrimIcinGerekenDnaText.text = "Evrim Zamanı!!";
+        kucukEvrim.SetActive(true);
+        
+        //Sequence
+        Sequence sequence = DOTween.Sequence();
+        sequence.AppendCallback(() => VignetteAcKapa(true));
+        sequence.Append(arkaPlan.DOFade(1, 1f));
+        sequence.Append(kucukEvrim.transform.DOScale(new Vector3(1,1,1), 0.75f).SetEase(Ease.OutElastic));
+        sequence.Append(kucukEvrim.transform.GetChild(0).GetComponent<CanvasGroup>().DOFade(1, 0.5f));
+        sequence.Append(kucukEvrim.transform.GetChild(1).GetComponent<CanvasGroup>().DOFade(1, 0.5f));
+        sequence.Append(kucukEvrim.transform.GetChild(2).GetComponent<CanvasGroup>().DOFade(1, 0.5f));
+        sequence.AppendInterval(2f);
+        sequence.Append(kucukEvrim.transform.DOScale(new Vector3(0,0,0), 0.75f).SetEase(Ease.Linear));
+        sequence.AppendCallback(() => evrim.Respawn());
+        sequence.AppendCallback(() => VignettePosBul());
+        sequence.Append(arkaPlan.DOFade(0, 1f));
+        sequence.AppendCallback(() => kucukEvrim.SetActive(false));
+        sequence.AppendCallback(() => VignetteAcKapa(false));
+        sequence.Append(kucukEvrim.transform.GetChild(2).GetComponent<CanvasGroup>().DOFade(0, 0.2f));
+        sequence.Append(kucukEvrim.transform.GetChild(1).GetComponent<CanvasGroup>().DOFade(0, 0.2f));
+        sequence.Append(kucukEvrim.transform.GetChild(0).GetComponent<CanvasGroup>().DOFade(0, 0.2f));
         sequence.Play();
     }
     
