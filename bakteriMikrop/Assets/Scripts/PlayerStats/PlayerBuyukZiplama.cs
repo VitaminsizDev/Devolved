@@ -7,7 +7,7 @@ public class PlayerBuyukZiplama : PlayerState
     public bool CanDash { get; private set; }
     private bool isHolding;
     private bool dashInputStop;
-
+    private float holdtime;
     private float lastDashTime;
 
     private Vector2 dashDirection;
@@ -15,9 +15,13 @@ public class PlayerBuyukZiplama : PlayerState
     private Vector2 lastAIPos;
 
     private bool isAbilityDone = false;
-    public int facing=0;
+    public int facing = 0;
+    Sequence sq2;
+    bool biti=false;
     public PlayerBuyukZiplama(Player player, PlayerStateMachine stateMachine, BacteriaStats playerData) : base(player, stateMachine, playerData)
     {
+     
+        sq2.Pause();
     }
 
     public override void AnimationFinishTrigger()
@@ -38,12 +42,16 @@ public class PlayerBuyukZiplama : PlayerState
     public override void Enter()
     {
         base.Enter();
-        if (facing==0)
+        biti = true;
+        if (facing == 0)
         {
             sq.Append(player.visual.transform.DOScale(new Vector3(1.5f, 0.5f, 1f), playerData.maxHoldTime));
             sq.Join(player.visual.transform.DOLocalMoveY(-0.5f, playerData.maxHoldTime));
+         
+           // sq.OnPause(() => sq2.Play());
+            //sq.OnKill(() => sq2.Play());
         }
-        else if (facing==1)
+        else if (facing == 1)
         {
             sq.Append(player.visual.transform.DOScale(new Vector3(0.5f, 1.5f, 1f), playerData.maxHoldTime));
             sq.Join(player.visual.transform.DOLocalMoveX(0.5f, playerData.maxHoldTime));
@@ -53,20 +61,21 @@ public class PlayerBuyukZiplama : PlayerState
             sq.Append(player.visual.transform.DOScale(new Vector3(0.5f, 1.5f, 1f), playerData.maxHoldTime));
             sq.Join(player.visual.transform.DOLocalMoveX(0.5f, playerData.maxHoldTime));
         }
-       
+        holdtime = 0f;
+        finalvelo = 0f;
         player.SetVelocityZero();
         player.DashDirectionIndicator.gameObject.SetActive(true);
         isAbilityDone = false;
         CanDash = false;
         isHolding = true;
         dashDirection = Vector2.right * player.FacingDirection;
-       
-    }
 
+    }
+    float finalvelo = 0;
     public override void Exit()
     {
         base.Exit();
-        player.visual.transform.localPosition = Vector3.zero;
+        // player.visual.transform.localPosition = Vector3.zero;
         facing = 0;
         if (player.CurrentVelocity.y > 0)
         {
@@ -84,11 +93,12 @@ public class PlayerBuyukZiplama : PlayerState
         if (!isExitingState)
         {
 
-            
+
 
 
             if (isHolding)
             {
+                holdtime += Time.deltaTime;
                 player.SetVelocityZero();
                 dashDirectionInput = player.InputHandler.DashDirectionInput;
                 dashInputStop = player.InputHandler.DashInputStop;
@@ -102,32 +112,52 @@ public class PlayerBuyukZiplama : PlayerState
                 float angle = Vector2.SignedAngle(Vector2.right, dashDirection);
                 player.DashDirectionIndicator.rotation = Quaternion.Euler(0f, 0f, angle - 45f);
 
-                if (dashInputStop || Time.time >= startTime + playerData.maxHoldTime)
+                if ((dashInputStop || Time.time >= startTime + playerData.maxHoldTime) && biti)
                 {
-                    isHolding = false;
-                  
-                    startTime = Time.time;
-                    player.CheckIfShouldFlip(Mathf.RoundToInt(dashDirection.x));
-                    player.RB.drag = 0;
-                    player.SetVelocity(playerData.buyukziplamavelo, dashDirection);
-                    player.DashDirectionIndicator.gameObject.SetActive(false);
+                    biti = false;
+                    sq.Kill();
+                    sq2 = DOTween.Sequence();
+
+                    sq2.Append(player.visual.transform.DOScale(new Vector3(1f, 1f, 1f), 0.1f));
+                    sq2.Join(player.visual.transform.DOLocalMoveY(0, 0.1f));
+                    sq2.Join(player.visual.transform.DOLocalMoveX(0, 0.1f));
+                    sq2.OnComplete(() => Zipla());
                    
+                   
+
                 }
             }
             else
             {
-                player.SetVelocity(playerData.buyukziplamavelo, dashDirection);
-              
-
-                if (Time.time >= startTime + playerData.dashTime)
+                if (biti==false)
                 {
-                    player.InputHandler.dashInput = false;
-                    player.RB.drag = 0f;
-                    isAbilityDone = true;
-                    lastDashTime = Time.time;
+                    player.SetVelocity(finalvelo, dashDirection);
+
+
+                    if (Time.time >= startTime + playerData.dashTime)
+                    {
+                        player.InputHandler.dashInput = false;
+                        player.RB.drag = 0f;
+                        isAbilityDone = true;
+                        lastDashTime = Time.time;
+                    }
                 }
+                
             }
         }
+    }
+
+    private void Zipla()
+    {
+        
+        Debug.Log("A");
+        isHolding = false;
+        startTime = Time.time;
+        player.CheckIfShouldFlip(Mathf.RoundToInt(dashDirection.x));
+        player.RB.drag = 0;
+        finalvelo = (playerData.buyukziplamavelo * ((holdtime) / (float)playerData.maxHoldTime));
+        player.SetVelocity(playerData.buyukziplamavelo * (finalvelo), dashDirection.normalized);
+        player.DashDirectionIndicator.gameObject.SetActive(false);
     }
 
     public override void PhysicsUpdate()

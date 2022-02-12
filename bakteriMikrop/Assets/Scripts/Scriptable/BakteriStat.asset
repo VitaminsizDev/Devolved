@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseHareketHizi: 3
   baseZiplamaLimiti: 3
-  UpgradedHareketHizi: 0.1
-  UpgradedZiplamaLimiti: 0.1
+  UpgradedHareketHizi: 0
+  UpgradedZiplamaLimiti: 0
   buyukziplamavelo: 10
   dashTime: 0.2
-  maxHoldTime: 0.5
+  maxHoldTime: 1
   dashCooldown: 1
   dashEndYMultiplier: 0
   drag: 0
