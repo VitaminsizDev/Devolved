@@ -4938,7 +4938,7 @@ MonoBehaviour:
   playerData: {fileID: 11400000, guid: 5b6c70f9820f95040ba08278dae15a5c, type: 2}
   DashDirectionIndicator: {fileID: 1591426338}
   duvartutun: 1
-  buyukzipla: 0
+  buyukzipla: 1
   FacingDirection: 0
   currentstate: 
 --- !u!1 &2091595963

@@ -109,9 +109,10 @@ public class UIController : MonoBehaviour
         sequence.AppendCallback(() => VignettePosBul());
         sequence.AppendCallback(() => SoundManager.instance.PlayGeriKapanmaSesi());
         sequence.Join(evrimSecmeEkrani.GetComponent<CanvasGroup>().DOFade(0, 0.2f));
-        sequence.Append(arkaPlan.DOFade(0, 0.5f));
-        sequence.AppendCallback(() => evrimSecmeEkrani.SetActive(false));
         sequence.AppendCallback(() => VignetteAcKapa(false));
+        sequence.Join(arkaPlan.DOFade(0, 0.5f));
+        sequence.AppendCallback(() => evrimSecmeEkrani.SetActive(false));
+        
         sequence.Play();
     }
 
@@ -138,9 +139,9 @@ public class UIController : MonoBehaviour
         sequence.Join(kucukEvrim.transform.DOScale(new Vector3(0,0,0), 0.75f).SetEase(Ease.Linear));
         sequence.AppendCallback(() => evrim.Respawn());
         sequence.AppendCallback(() => VignettePosBul());
-        sequence.Append(arkaPlan.DOFade(0, 1f));
-        sequence.AppendCallback(() => kucukEvrim.SetActive(false));
         sequence.AppendCallback(() => VignetteAcKapa(false));
+        sequence.Join(arkaPlan.DOFade(0, 1f));
+        sequence.AppendCallback(() => kucukEvrim.SetActive(false));
         sequence.Append(kucukEvrim.transform.GetChild(2).GetComponent<CanvasGroup>().DOFade(0, 0.2f));
         sequence.Append(kucukEvrim.transform.GetChild(1).GetComponent<CanvasGroup>().DOFade(0, 0.2f));
         sequence.Append(kucukEvrim.transform.GetChild(0).GetComponent<CanvasGroup>().DOFade(0, 0.2f));
