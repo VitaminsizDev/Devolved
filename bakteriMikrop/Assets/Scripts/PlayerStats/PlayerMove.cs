@@ -4,9 +4,12 @@ using UnityEngine;
 using DG.Tweening;
 public class PlayerMove : PlayerState
 {
-
+    Tween moveTweener;
     public PlayerMove(Player player, PlayerStateMachine stateMachine, BacteriaStats playerData) : base(player, stateMachine, playerData)
     {
+        moveTweener = player.visual.transform.DOScale(new Vector3(1f -xInput*0.9f,1f +yInput*0.9f,1f),1f).SetLoops(-1,LoopType.Yoyo).SetEase(Ease.Linear);
+        //Dont play moveTweener on start
+        moveTweener.Pause();
     }
 
     public override void AnimationFinishTrigger()
@@ -28,12 +31,13 @@ public class PlayerMove : PlayerState
     {
         base.Enter();
         player.buyukziplama.ResetCanDash();
-        //sq.Append(player.visual.transform.DOScale(new Vector3(0.85f, 1f, 1f), 0.5f)).Append(player.visual.transform.DOScale(new Vector3(1.15f, 1f, 1f), 0.5f)).SetLoops(-1, LoopType.Yoyo); 
-   
+        moveTweener.Restart();
+
     }
 
     public override void Exit()
     {
+        moveTweener.Pause();
         base.Exit();
     }
 

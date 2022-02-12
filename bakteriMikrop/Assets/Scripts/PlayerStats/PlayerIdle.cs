@@ -8,6 +8,7 @@ public class PlayerIdle : PlayerState
     public PlayerIdle(Player player, PlayerStateMachine stateMachine, BacteriaStats playerData) : base(player, stateMachine, playerData)
     {
         idleTween = player.visual.transform.DOScale(new Vector3(1.1f,1.1f,1f),1f).SetLoops(-1,LoopType.Yoyo).SetEase(Ease.Linear);
+        idleTween.Pause();
     }
 
     public override void AnimationFinishTrigger()
@@ -31,7 +32,7 @@ public class PlayerIdle : PlayerState
         player.buyukziplama.ResetCanDash();
         player.SetVelocityX(0f);
         
-        idleTween.Play();
+        idleTween.Restart();
     }
 
     public override void Exit()
