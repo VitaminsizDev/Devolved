@@ -22,6 +22,8 @@ MonoBehaviour:
   dashCooldown: 1
   dashEndYMultiplier: 0
   drag: 0
+  Duvartutunmasure: 3
+  UpgradedDuvartutunmasure: 0
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8

@@ -43,6 +43,7 @@ public class PlayerBuyukZiplama : PlayerState
     {
         base.Enter();
         biti = true;
+        player.transform.SetParent(transformvar);
         if (facing == 0)
         {
             sq.Append(player.visual.transform.DOScale(new Vector3(1.5f, 0.5f, 1f), playerData.maxHoldTime));
@@ -149,8 +150,8 @@ public class PlayerBuyukZiplama : PlayerState
 
     private void Zipla()
     {
-        
-        Debug.Log("A");
+
+        player.transform.SetParent(null);
         isHolding = false;
         startTime = Time.time;
         player.CheckIfShouldFlip(Mathf.RoundToInt(dashDirection.x));
@@ -158,6 +159,11 @@ public class PlayerBuyukZiplama : PlayerState
         finalvelo = (playerData.buyukziplamavelo * ((holdtime) / (float)playerData.maxHoldTime));
         player.SetVelocity(playerData.buyukziplamavelo * (finalvelo), dashDirection.normalized);
         player.DashDirectionIndicator.gameObject.SetActive(false);
+    }
+    Transform transformvar;
+    public void parenayarla(Transform parentt)
+    {
+        transformvar = parentt;
     }
 
     public override void PhysicsUpdate()

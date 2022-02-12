@@ -30,6 +30,7 @@ public class PlayerDuvarTutanma : PlayerState
     public override void Enter()
     {
         base.Enter();
+        player.transform.SetParent(player.setparentts2());
         player.buyukziplama.ResetCanDash();
         holdPosition = player.transform.position;
     }
@@ -37,6 +38,9 @@ public class PlayerDuvarTutanma : PlayerState
     public override void Exit()
     {
         base.Exit();
+        player.transform.SetParent(null);
+
+        player.RB.gravityScale = 1f;
     }
 
     public override void LogicUpdate()
@@ -57,6 +61,7 @@ public class PlayerDuvarTutanma : PlayerState
         else if (player.InputHandler.dashInput && player.buyukzipla && player.buyukziplama.CheckIfCanDash())
         {
             player.buyukziplama.facing = holdfacing;
+            player.buyukziplama.parenayarla(player.transform.parent);
             stateMachine.ChangeState(player.buyukziplama);
         }
         else if (sure > playerData.Duvartutunmasure + playerData.UpgradedDuvartutunmasure)
@@ -72,7 +77,8 @@ public class PlayerDuvarTutanma : PlayerState
     }
     private void HoldPosition()
     {
-        player.transform.position = holdPosition;
+        player.RB.gravityScale = 0f;
+       // player.transform.position = holdPosition;
         holdfacing = player.FacingDirection;
         player.SetVelocityX(0f);
         player.SetVelocityY(0f);

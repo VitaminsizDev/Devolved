@@ -29,6 +29,7 @@ public class PlayerIdle : PlayerState
     public override void Enter()
     {
         base.Enter();
+        player.transform.SetParent(player.setparentts());
         player.duvarstate.ResetTutun();
         player.buyukziplama.ResetCanDash();
         player.SetVelocityX(0f);
@@ -40,6 +41,7 @@ public class PlayerIdle : PlayerState
     {
         idleTween.Pause();
         base.Exit();
+        player.transform.SetParent(null);
     }
 
     public override void LogicUpdate()
@@ -63,6 +65,7 @@ public class PlayerIdle : PlayerState
             }
             else if (player.InputHandler.dashInput && player.buyukzipla && player.buyukziplama.CheckIfCanDash())
             {
+                player.buyukziplama.parenayarla(player.transform.parent);
                 stateMachine.ChangeState(player.buyukziplama);
             }
         }

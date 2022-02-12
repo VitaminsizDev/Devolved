@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     public PlayerInputHandler InputHandler { get; private set; }
     public Rigidbody2D RB { get; private set; }
     public Transform DashDirectionIndicator;
+    private BoxCollider2D colider;
     //
     [Header("Evrimler")]
     public bool duvartutun;
@@ -46,9 +47,9 @@ public class Player : MonoBehaviour
 
     //gozlem
     public string currentstate;
-    protected  void Awake()
+    protected void Awake()
     {
-       
+        colider = GetComponent<BoxCollider2D>();
         StateMachine = new PlayerStateMachine();
 
         IdleState = new PlayerIdle(this, StateMachine, playerData);
@@ -58,7 +59,7 @@ public class Player : MonoBehaviour
         duvarstate = new PlayerDuvarTutanma(this, StateMachine, playerData);
         buyukziplama = new PlayerBuyukZiplama(this, StateMachine, playerData);
 
-   
+
     }
     private void Start()
     {
@@ -77,11 +78,11 @@ public class Player : MonoBehaviour
         CurrentVelocity = RB.velocity;
         StateMachine.CurrentState.LogicUpdate();
     }
-  
+
 
     private void FixedUpdate()
     {
- 
+
         StateMachine.CurrentState.PhysicsUpdate();
     }
     #region digerfonk
@@ -96,6 +97,7 @@ public class Player : MonoBehaviour
         get => Physics2D.OverlapCircle(CeilingCheck.position, playerData.groundCheckRadius, playerData.whatIsGround);
     }
 
+    public RaycastHit2D info;
     public bool Ground
     {
         get => Physics2D.OverlapCircle(GroundCheck.position, playerData.groundCheckRadius, playerData.whatIsGround);
@@ -110,9 +112,29 @@ public class Player : MonoBehaviour
     {
         get => Physics2D.Raycast(WallCheck.position, Vector2.right * -FacingDirection, playerData.wallCheckDistance, playerData.whatIsGround);
     }
-
+    //public Transform groundtransform
+    //{
+    //get=>    Physics2D.Raycast(WallCheck.position, Vector2.down, playerData.wallCheckDistance, playerData.whatIsGround);
+    //}
     #endregion
-
+    public Transform setparentts()
+    {
+        info = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y- (colider.size.y/2)+0.2f), Vector2.down, 0.4f, playerData.whatIsGround);
+        if (info)
+        {
+            return info.collider.transform;
+        }
+        return null;
+    }  
+    public Transform setparentts2()
+    {
+        info = Physics2D.Raycast(new Vector2(transform.position.x+FacingDirection*(colider.size.x / 2) +( -FacingDirection* 0.2f), transform.position.y),FacingDirection* Vector2.right, 0.4f, playerData.whatIsGround);
+        if (info)
+        {
+            return info.collider.transform;
+        }
+        return null;
+    }
     #region move
     public void SetVelocity(float velocity, Vector2 direction)
     {
@@ -168,6 +190,6 @@ public class Player : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(GroundCheck.position, playerData.groundCheckRadius);
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(WallCheck.position, new Vector3 (WallCheck.position.x+ playerData.wallCheckDistance, WallCheck.position.y));
+        Gizmos.DrawLine(WallCheck.position, new Vector3(WallCheck.position.x + playerData.wallCheckDistance, WallCheck.position.y));
     }
 }
