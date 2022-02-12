@@ -4,9 +4,10 @@ using UnityEngine;
 using DG.Tweening;
 public class PlayerIdle : PlayerState
 {
-
+    Tween idleTween;
     public PlayerIdle(Player player, PlayerStateMachine stateMachine, BacteriaStats playerData) : base(player, stateMachine, playerData)
     {
+        idleTween = player.visual.transform.DOScale(new Vector3(1.1f,1.1f,1f),1f).SetLoops(-1,LoopType.Yoyo).SetEase(Ease.Linear);
     }
 
     public override void AnimationFinishTrigger()
@@ -28,14 +29,14 @@ public class PlayerIdle : PlayerState
     {
         base.Enter();
         player.buyukziplama.ResetCanDash();
-        sq.Append(player.visual.transform.DOScale(new Vector3(0.9f,1f,1f),1f));
-        sq.Append(player.visual.transform.DOScale(new Vector3(1.1f, 1f, 1f), 1f));
-        sq.SetLoops(-1,LoopType.Yoyo);
         player.SetVelocityX(0f);
+        
+        idleTween.Play();
     }
 
     public override void Exit()
     {
+        idleTween.Pause();
         base.Exit();
     }
 

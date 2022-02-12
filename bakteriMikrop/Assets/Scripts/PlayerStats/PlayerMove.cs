@@ -28,7 +28,7 @@ public class PlayerMove : PlayerState
     {
         base.Enter();
         player.buyukziplama.ResetCanDash();
-        sq.Append(player.visual.transform.DOScale(new Vector3(0.85f, 1f, 1f), 0.5f)).Append(player.visual.transform.DOScale(new Vector3(1.15f, 1f, 1f), 0.5f)).SetLoops(-1, LoopType.Yoyo); 
+        //sq.Append(player.visual.transform.DOScale(new Vector3(0.85f, 1f, 1f), 0.5f)).Append(player.visual.transform.DOScale(new Vector3(1.15f, 1f, 1f), 0.5f)).SetLoops(-1, LoopType.Yoyo); 
    
     }
 
