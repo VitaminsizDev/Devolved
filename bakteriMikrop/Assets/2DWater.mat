@@ -89,9 +89,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_1f2edd3ecec04546a79ef563aea5cf63: 115.7
+    - Vector1_1f2edd3ecec04546a79ef563aea5cf63: 18.16
     - Vector1_5687d4ac67c94b05af1f8b4f6f0bf749: 0.1
-    - Vector1_67b73ac90e224002b8d231f47db940d9: 29.57
+    - Vector1_67b73ac90e224002b8d231f47db940d9: 27.79
     - Vector1_6c9825e5590141a38348624f2f45c69c: 0.11
     - Vector1_bb8980908db74ee5b4fd020fa5b10de1: 95.9
     - _AlphaClip: 0
@@ -129,7 +129,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Layer1Speed: {r: 0.0006, g: 0.001, b: 0, a: 0}
-    - _Layer2Speed: {r: 0.0002, g: 0.0003, b: 0, a: 0}
+    - _Layer1Speed: {r: 0.0006, g: -0.001, b: 0, a: 0}
+    - _Layer2Speed: {r: 0.0002, g: -0.0003, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []

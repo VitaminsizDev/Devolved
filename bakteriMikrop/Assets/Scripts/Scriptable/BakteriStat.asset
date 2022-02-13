@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: BakteriStat
   m_EditorClassIdentifier: 
   baseHareketHizi: 3
-  baseZiplamaLimiti: 2
-  UpgradedHareketHizi: 0
-  UpgradedZiplamaLimiti: 0
+  baseZiplamaLimiti: 1
+  UpgradedHareketHizi: 1
+  UpgradedZiplamaLimiti: 1
   coyoteTime: 0.2
   buyukziplamavelo: 10
   buyukziplamaUpragevelo: 0
