@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
     public GameObject buyukziplamaparticle;
     public GameObject jumpeffect;
     public GameObject canvas;
+    public GameObject TarilEffect;
     public Slider infoslider;
     public SpriteRenderer visual;
     [SerializeField]

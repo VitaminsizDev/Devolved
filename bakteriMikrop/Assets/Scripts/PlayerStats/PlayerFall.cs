@@ -29,11 +29,13 @@ public class PlayerFall : PlayerState
     public override void Enter()
     {
         base.Enter();
+        player.TarilEffect.SetActive(true);
     }
 
     public override void Exit()
     {
         base.Exit();
+        player.TarilEffect.SetActive(false);
         startcoyete = false;
     }
 

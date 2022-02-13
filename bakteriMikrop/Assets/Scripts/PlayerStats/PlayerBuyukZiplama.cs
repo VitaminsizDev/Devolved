@@ -87,6 +87,7 @@ public class PlayerBuyukZiplama : PlayerState
     public override void Exit()
     {
         base.Exit();
+        player.TarilEffect.SetActive(false);
         // player.visual.transform.localPosition = Vector3.zero;
         facing = 0;
         player.canvas.SetActive(false);
@@ -178,6 +179,7 @@ public class PlayerBuyukZiplama : PlayerState
             GameObject.Instantiate(player.jumpeffect, player.transform.position, Quaternion.Euler(0f, 0f, -90f));
           
         }
+        player.TarilEffect.SetActive(true);
         player.buyukziplamaparticle.SetActive(false);
         player.canvas.SetActive(false);
         player.transform.SetParent(null);
