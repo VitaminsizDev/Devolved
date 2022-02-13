@@ -8,6 +8,7 @@ public class Toplanabilir : MonoBehaviour
     //Private Evrim find in scene GameObject Scripts
     private Evrim evrim => FindObjectOfType<Evrim>();
     public GameObject yemekparticle;
+    public GameObject DNAparticle;
     
     //OnTriggerEnter2D is called whenever an object enters a trigger collider attached to this object (2D physics only).
     private void OnTriggerEnter2D(Collider2D other)
@@ -19,6 +20,7 @@ public class Toplanabilir : MonoBehaviour
                 evrim.CollectDna();
                 Camera.main.GetComponent<RipplePostProcessor>().Ripple();
                 SoundManager.instance.PlayDnaToplamaSesi();
+                Instantiate(DNAparticle, transform.position, Quaternion.identity);
                 //this.gameObject.SetActive(false);
             }
             else
