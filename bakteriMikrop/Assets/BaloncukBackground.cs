@@ -6,6 +6,7 @@ using UnityEngine;
 public class BaloncukBackground : MonoBehaviour
 {
     public Transform player;
+    public float timeDelay;
     Tween currentTweenUp;
     Tween currentTweenRight;
     float randomXValue;
@@ -14,13 +15,13 @@ public class BaloncukBackground : MonoBehaviour
     //Start is called before the first frame update
     void Start()
     {
-        Respawn();
+        Invoke("Respawn", timeDelay);
     }
     public void MoveUpwardTween()
     {
         //Randomize the X and Y values between 0.5 and 1.5
-        randomXValue = Random.Range(0.5f, 1.5f);
-        randomYValue = Random.Range(3f, 5f);
+        randomXValue = Random.Range(0.5f, 4f);
+        randomYValue = Random.Range(2f, 8f);
         currentTweenUp = transform.DOMoveY(transform.position.y + randomYValue, 1f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Incremental);
         currentTweenRight = transform.DOMoveX(transform.position.x + randomXValue, 1f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
         currentTweenUp.Play();
