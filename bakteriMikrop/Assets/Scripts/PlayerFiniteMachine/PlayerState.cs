@@ -8,8 +8,8 @@ public class PlayerState
     protected bool isGrounded;
     protected bool isTouchingWall;
     protected bool isTouchingWallBack;
-    protected int xInput;
-    protected int yInput;
+    public int xInput;
+    public int yInput;
     protected Player player;
     protected PlayerStateMachine stateMachine;
     protected BacteriaStats playerData;
