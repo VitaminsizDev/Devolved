@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -13,9 +14,17 @@ public class Player : MonoBehaviour
     public PlayerFall fallState { get; private set; }
     public PlayerDuvarTutanma duvarstate { get; private set; }
     public PlayerBuyukZiplama buyukziplama { get; private set; }
+    public BekleState beklestate { get; private set; }
 
 
     //components
+    public ParticleSystem move; 
+    public ParticleSystem land; 
+    public ParticleSystem suzulme;
+    public GameObject buyukziplamaparticle;
+    public GameObject jumpeffect;
+    public GameObject canvas;
+    public Slider infoslider;
     public SpriteRenderer visual;
     [SerializeField]
     private Transform WallCheck;
@@ -51,13 +60,15 @@ public class Player : MonoBehaviour
     {
         colider = GetComponent<BoxCollider2D>();
         StateMachine = new PlayerStateMachine();
-
+        suzulme.Stop();
         IdleState = new PlayerIdle(this, StateMachine, playerData);
         MoveState = new PlayerMove(this, StateMachine, playerData);
         suzulmeState = new PlayerSuzulme(this, StateMachine, playerData);
         fallState = new PlayerFall(this, StateMachine, playerData);
         duvarstate = new PlayerDuvarTutanma(this, StateMachine, playerData);
         buyukziplama = new PlayerBuyukZiplama(this, StateMachine, playerData);
+        beklestate = new BekleState(this, StateMachine, playerData);
+        
 
 
     }

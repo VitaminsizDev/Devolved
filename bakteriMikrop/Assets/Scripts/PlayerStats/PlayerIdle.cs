@@ -53,6 +53,7 @@ public class PlayerIdle : PlayerState
         {
             if (!isGrounded)
             {
+                player.fallState.startcoyete = true;
                 stateMachine.ChangeState(player.fallState);
             }
             if (xInput != 0)

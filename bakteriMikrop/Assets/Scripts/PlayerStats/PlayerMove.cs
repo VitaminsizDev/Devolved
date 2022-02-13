@@ -7,7 +7,7 @@ public class PlayerMove : PlayerState
     Tween moveTweener;
     public PlayerMove(Player player, PlayerStateMachine stateMachine, BacteriaStats playerData) : base(player, stateMachine, playerData)
     {
-        moveTweener = player.visual.transform.DOScale(new Vector3(1f -xInput*0.9f,1f +yInput*0.9f,1f),1f).SetLoops(-1,LoopType.Yoyo).SetEase(Ease.Linear);
+        moveTweener = player.visual.transform.DOScale(new Vector3(1f - xInput * 0.9f, 1f + yInput * 0.9f, 1f), 1f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
         //Dont play moveTweener on start
         moveTweener.Pause();
     }
@@ -24,12 +24,13 @@ public class PlayerMove : PlayerState
 
     public override void DoChecks()
     {
-        base.DoChecks(); 
+        base.DoChecks();
     }
 
     public override void Enter()
     {
         base.Enter();
+        player.move.Play();
         player.transform.SetParent(player.setparentts());
         player.duvarstate.ResetTutun();
         player.buyukziplama.ResetCanDash();
@@ -40,6 +41,7 @@ public class PlayerMove : PlayerState
     public override void Exit()
     {
         moveTweener.Pause();
+        player.move.Stop();
         base.Exit();
         player.transform.SetParent(null);
     }
@@ -52,16 +54,16 @@ public class PlayerMove : PlayerState
 
         player.CheckIfShouldFlip(xInput);
 
-        player.SetVelocityX((playerData. baseHareketHizi+playerData.UpgradedHareketHizi) * xInput);
+        player.SetVelocityX((playerData.baseHareketHizi + playerData.UpgradedHareketHizi) * xInput);
 
         if (!isExitingState)
         {
             if (!isGrounded)
             {
+                player.fallState.startcoyete = true;
                 stateMachine.ChangeState(player.fallState);
             }
-          
-            if (xInput == 0)
+            else if (xInput == 0)
             {
                 stateMachine.ChangeState(player.IdleState);
             }

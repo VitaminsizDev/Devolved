@@ -16,13 +16,14 @@ MonoBehaviour:
   baseZiplamaLimiti: 3
   UpgradedHareketHizi: 0
   UpgradedZiplamaLimiti: 0
+  coyoteTime: 0.2
   buyukziplamavelo: 10
   dashTime: 0.2
   maxHoldTime: 1
   dashCooldown: 1
   dashEndYMultiplier: 0
   drag: 0
-  Duvartutunmasure: 3
+  Duvartutunmasure: 1.5
   UpgradedDuvartutunmasure: 0
   whatIsGround:
     serializedVersion: 2

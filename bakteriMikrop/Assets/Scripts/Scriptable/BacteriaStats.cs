@@ -10,8 +10,10 @@ public class BacteriaStats : ScriptableObject
     
     public float UpgradedHareketHizi;
     public float UpgradedZiplamaLimiti;
+    public float coyoteTime;
     [Header("BuyukZiplama")]
     public float buyukziplamavelo;
+    public float buyukziplamaUpragevelo;
     public float dashTime;
     public float maxHoldTime;
     public float dashCooldown;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
 public class PlayerBuyukZiplama : PlayerState
 {
@@ -17,10 +18,10 @@ public class PlayerBuyukZiplama : PlayerState
     private bool isAbilityDone = false;
     public int facing = 0;
     Sequence sq2;
-    bool biti=false;
+    bool biti = false;
     public PlayerBuyukZiplama(Player player, PlayerStateMachine stateMachine, BacteriaStats playerData) : base(player, stateMachine, playerData)
     {
-     
+
         sq2.Pause();
     }
 
@@ -44,21 +45,31 @@ public class PlayerBuyukZiplama : PlayerState
         base.Enter();
         biti = true;
         player.transform.SetParent(transformvar);
+        player.canvas.SetActive(true);
+        player.infoslider.maxValue = playerData.maxHoldTime;
+        player.infoslider.fillRect.GetComponent<Image>().color = Color.red;
+        player.buyukziplamaparticle.SetActive(true);
         if (facing == 0)
         {
+            player.buyukziplamaparticle.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+         
             sq.Append(player.visual.transform.DOScale(new Vector3(1.5f, 0.5f, 1f), playerData.maxHoldTime));
             sq.Join(player.visual.transform.DOLocalMoveY(-0.5f, playerData.maxHoldTime));
-         
-           // sq.OnPause(() => sq2.Play());
+
+            // sq.OnPause(() => sq2.Play());
             //sq.OnKill(() => sq2.Play());
         }
         else if (facing == 1)
         {
+           
+            player.buyukziplamaparticle.transform.rotation = Quaternion.Euler(0f, 0f, 90f);
             sq.Append(player.visual.transform.DOScale(new Vector3(0.5f, 1.5f, 1f), playerData.maxHoldTime));
             sq.Join(player.visual.transform.DOLocalMoveX(0.5f, playerData.maxHoldTime));
         }
         else if (facing == -1)
         {
+          
+            player.buyukziplamaparticle.transform.rotation = Quaternion.Euler(0f, 0f, -90f);
             sq.Append(player.visual.transform.DOScale(new Vector3(0.5f, 1.5f, 1f), playerData.maxHoldTime));
             sq.Join(player.visual.transform.DOLocalMoveX(0.5f, playerData.maxHoldTime));
         }
@@ -78,6 +89,8 @@ public class PlayerBuyukZiplama : PlayerState
         base.Exit();
         // player.visual.transform.localPosition = Vector3.zero;
         facing = 0;
+        player.canvas.SetActive(false);
+        player.buyukziplamaparticle.SetActive(false);
         if (player.CurrentVelocity.y > 0)
         {
             //player.SetVelocityY(player.CurrentVelocity.y * playerData.dashEndYMultiplier);
@@ -93,17 +106,14 @@ public class PlayerBuyukZiplama : PlayerState
         }
         if (!isExitingState)
         {
-
-
-
-
             if (isHolding)
             {
                 holdtime += Time.deltaTime;
                 player.SetVelocityZero();
                 dashDirectionInput = player.InputHandler.DashDirectionInput;
                 dashInputStop = player.InputHandler.DashInputStop;
-
+                player.infoslider.value = holdtime;
+                player.infoslider.fillRect.GetComponent<Image>().color = Color.Lerp(player.infoslider.fillRect.GetComponent<Image>().color,Color.green,Time.deltaTime);
                 if (dashDirectionInput != Vector2.zero)
                 {
                     dashDirection = dashDirectionInput;
@@ -123,14 +133,14 @@ public class PlayerBuyukZiplama : PlayerState
                     sq2.Join(player.visual.transform.DOLocalMoveY(0, 0.1f));
                     sq2.Join(player.visual.transform.DOLocalMoveX(0, 0.1f));
                     sq2.OnComplete(() => Zipla());
-                   
-                   
+
+
 
                 }
             }
             else
             {
-                if (biti==false)
+                if (biti == false)
                 {
                     player.SetVelocity(finalvelo, dashDirection);
 
@@ -143,20 +153,39 @@ public class PlayerBuyukZiplama : PlayerState
                         lastDashTime = Time.time;
                     }
                 }
-                
+
             }
         }
     }
 
     private void Zipla()
     {
-
+        if (facing == 0)
+        {
+          
+            GameObject.Instantiate(player.jumpeffect, player.transform.position, Quaternion.Euler(0f, 0f, 0f));
+           
+            // sq.OnPause(() => sq2.Play());
+            //sq.OnKill(() => sq2.Play());
+        }
+        else if (facing == 1)
+        {
+            GameObject.Instantiate(player.jumpeffect, player.transform.position, Quaternion.Euler(0f, 0f, 90f));
+           
+        }
+        else if (facing == -1)
+        {
+            GameObject.Instantiate(player.jumpeffect, player.transform.position, Quaternion.Euler(0f, 0f, -90f));
+          
+        }
+        player.buyukziplamaparticle.SetActive(false);
+        player.canvas.SetActive(false);
         player.transform.SetParent(null);
         isHolding = false;
         startTime = Time.time;
         player.CheckIfShouldFlip(Mathf.RoundToInt(dashDirection.x));
         player.RB.drag = 0;
-        finalvelo = (playerData.buyukziplamavelo * ((holdtime) / (float)playerData.maxHoldTime));
+        finalvelo = ((playerData.buyukziplamavelo+playerData.buyukziplamaUpragevelo) * ((holdtime) / (float)playerData.maxHoldTime));
         player.SetVelocity(playerData.buyukziplamavelo * (finalvelo), dashDirection.normalized);
         player.DashDirectionIndicator.gameObject.SetActive(false);
     }

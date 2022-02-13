@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class PlayerDuvarTutanma : PlayerState
 {
@@ -30,6 +32,12 @@ public class PlayerDuvarTutanma : PlayerState
     public override void Enter()
     {
         base.Enter();
+        player.canvas.SetActive(true);
+        player.infoslider.maxValue = playerData.Duvartutunmasure + playerData.UpgradedDuvartutunmasure;
+        player.infoslider.value = player.infoslider.maxValue-sure;
+        player.infoslider.fillRect.GetComponent<Image>().color = Color.green;
+        player.infoslider.fillRect.GetComponent<Image>().DOColor(Color.red, playerData.Duvartutunmasure + playerData.UpgradedDuvartutunmasure);
+      //  player.infoslider.fillRect.GetComponent<Image>().color = Color.Lerp(player.infoslider.fillRect.GetComponent<Image>().color, Color.green, Time.deltaTime);
         player.transform.SetParent(player.setparentts2());
         player.buyukziplama.ResetCanDash();
         holdPosition = player.transform.position;
@@ -39,7 +47,7 @@ public class PlayerDuvarTutanma : PlayerState
     {
         base.Exit();
         player.transform.SetParent(null);
-
+        player.canvas.SetActive(false);
         player.RB.gravityScale = 1f;
     }
 
@@ -48,27 +56,34 @@ public class PlayerDuvarTutanma : PlayerState
         base.LogicUpdate();
         HoldPosition();
         player.CheckIfShouldFlip(xInput);
-        sure += Time.deltaTime;
+       
+        if (!isExitingState)
+        {
+            sure += Time.deltaTime;
+            player.infoslider.value -= Time.deltaTime;
+            if (sure > playerData.Duvartutunmasure + playerData.UpgradedDuvartutunmasure)
+            {
+                tutun = false;
 
-        if (player.FacingDirection != holdfacing)
-        {
-            stateMachine.ChangeState(player.fallState);
+            }
+            if (player.FacingDirection != holdfacing || !tutun)
+            {
+                stateMachine.ChangeState(player.fallState);
+            }
+            else if (yInput == 1)
+            {
+                stateMachine.ChangeState(player.suzulmeState);
+            }
+            else if (player.InputHandler.dashInput && player.buyukzipla && player.buyukziplama.CheckIfCanDash())
+            {
+                player.buyukziplama.facing = holdfacing;
+                player.buyukziplama.parenayarla(player.transform.parent);
+                stateMachine.ChangeState(player.buyukziplama);
+            }
         }
-        else if (yInput == 1)
-        {
-            stateMachine.ChangeState(player.suzulmeState);
-        }
-        else if (player.InputHandler.dashInput && player.buyukzipla && player.buyukziplama.CheckIfCanDash())
-        {
-            player.buyukziplama.facing = holdfacing;
-            player.buyukziplama.parenayarla(player.transform.parent);
-            stateMachine.ChangeState(player.buyukziplama);
-        }
-        else if (sure > playerData.Duvartutunmasure + playerData.UpgradedDuvartutunmasure)
-        {
-            tutun = false;
-            stateMachine.ChangeState(player.fallState);
-        }
+
+
+
     }
 
     public override void PhysicsUpdate()
@@ -78,7 +93,7 @@ public class PlayerDuvarTutanma : PlayerState
     private void HoldPosition()
     {
         player.RB.gravityScale = 0f;
-       // player.transform.position = holdPosition;
+        // player.transform.position = holdPosition;
         holdfacing = player.FacingDirection;
         player.SetVelocityX(0f);
         player.SetVelocityY(0f);

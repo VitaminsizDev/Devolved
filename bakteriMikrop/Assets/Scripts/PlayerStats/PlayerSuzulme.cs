@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerSuzulme : PlayerState
 {
     private float toplamgezme;
 
     private Vector3 sonPosition;
+    Sequence suzulsq;
     public PlayerSuzulme(Player player, PlayerStateMachine stateMachine, BacteriaStats playerData) : base(player, stateMachine, playerData)
     {
+      
     }
 
     public override void AnimationFinishTrigger()
@@ -29,14 +32,21 @@ public class PlayerSuzulme : PlayerState
     public override void Enter()
     {
         base.Enter();
+        suzulsq = DOTween.Sequence();
+        suzulsq.Append(player.visual.transform.DOScale((Vector3.one * 0.9f),0.6f)).Append(player.visual.transform.DOScale((Vector3.one * 1.1f), 0.6f));
+        suzulsq.SetLoops(-1, LoopType.Yoyo);
+        suzulsq.Play();
         sonPosition = player.transform.position;
         toplamgezme = 0f;
+        player.suzulme.Play();
 
     }
 
     public override void Exit()
     {
         base.Exit();
+        suzulsq.Pause();
+        player.suzulme.Stop();
 
     }
 
@@ -45,7 +55,7 @@ public class PlayerSuzulme : PlayerState
         base.LogicUpdate();
 
         toplamgezme += (playerData.UpgradedHareketHizi + playerData.baseHareketHizi) * Time.deltaTime;
-        
+
 
 
 
@@ -66,7 +76,7 @@ public class PlayerSuzulme : PlayerState
             {
                 stateMachine.ChangeState(player.fallState);
             }
-            else if (player.duvartutun && isTouchingWall && player.FacingDirection==xInput &&!player.Ground && player.duvarstate.tutun)
+            else if (player.duvartutun && isTouchingWall && player.FacingDirection == xInput && !player.Ground && player.duvarstate.tutun)
             {
                 stateMachine.ChangeState(player.duvarstate);
             }
@@ -80,7 +90,7 @@ public class PlayerSuzulme : PlayerState
                 stateMachine.ChangeState(player.fallState);
             }
         }
-       
+
 
     }
 
