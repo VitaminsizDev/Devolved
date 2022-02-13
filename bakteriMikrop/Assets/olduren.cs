@@ -9,7 +9,7 @@ public class olduren : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            GameObject.FindObjectOfType<Evrim>().oldun();
+            GameObject.FindObjectOfType<Evrim>().EvrimGecir();
         }
     }
 }

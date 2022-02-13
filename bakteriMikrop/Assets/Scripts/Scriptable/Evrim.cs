@@ -41,39 +41,47 @@ public class Evrim : MonoBehaviour
         UIController.instance.UpdateEvrimIcinGerekenDnaText(3-buElToplananDnaSayisi);
 
     }
-    //Call EvrimGecir on space key
-    void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    EvrimGecir();
-        //}
-    }
     
     //Evrim Gecir
     public void EvrimGecir()
     {
-        if(buElToplananDnaSayisi == 0) return;
-        bStats.UpgradedHareketHizi += buElToplananDnaSayisi * hareketHiziArtisMiktari;
-        bStats.UpgradedZiplamaLimiti += buElToplananDnaSayisi * yukariHareketArtisMiktari;
-        totalToplananDnaSayisi += buElToplananDnaSayisi;
-        buElToplananDnaSayisi = 0;
+        if (birikenpuanHareketArtisMiktari == 0)
+        {
+            oldun();
+            return;
+        }
         
+        player.GetComponent<Player>().StateMachine.ChangeState(player.GetComponent<Player>().beklestate);
         
-        //UI Update
-        if (totalToplananDnaSayisi >= 3)
+        bStats.UpgradedHareketHizi += birikenpuanHareketArtisMiktari;
+        bStats.UpgradedZiplamaLimiti += birikenpuanHareketArtisMiktari;
+        bStats.UpgradedDuvartutunmasure += birikenpuanduvarTutunmasMiktari;
+        bStats.buyukziplamaUpragevelo += birikenBuyukZiplamaMiktariArtisMiktari;
+
+        birikenpuanHareketArtisMiktari = 0f;
+        yukariHareketArtisMiktari = 0f;
+        birikenpuanduvarTutunmasMiktari = 0f;
+        birikenBuyukZiplamaMiktariArtisMiktari = 0f;
+        
+        UIController.instance.KucukEvrimGecir();
+    }
+    
+    //Check Evrim
+    public void CheckEvrim()
+    {
+        if (buElToplananDnaSayisi >= 3)
         {
             //Muzik Degistir
             SoundManager.instance.FadeMusicChange(true);
             UIController.instance.EvrimSecimEkraniAc();
+            buElToplananDnaSayisi = 0;
         }
         else
         {
-            
-            UIController.instance.KucukEvrimGecir();
+            UIController.instance.UpdateEvrimIcinGerekenDnaText(3-buElToplananDnaSayisi);
         }
     }
-
+    
     public void CollectDna()
     {
             buElToplananDnaSayisi++;
@@ -102,20 +110,9 @@ public class Evrim : MonoBehaviour
             player.transform.position = respawnpos.position;
             arkaPlan.DOFade(0, 0.4f).OnComplete(() =>
             {
-                bStats.UpgradedHareketHizi += birikenpuanHareketArtisMiktari;
-                bStats.UpgradedZiplamaLimiti += birikenpuanHareketArtisMiktari;
-                bStats.UpgradedDuvartutunmasure += birikenpuanduvarTutunmasMiktari;
-                bStats.buyukziplamaUpragevelo += birikenBuyukZiplamaMiktariArtisMiktari;
-
-                birikenpuanHareketArtisMiktari = 0f;
-                yukariHareketArtisMiktari = 0f;
-                birikenpuanduvarTutunmasMiktari = 0f;
-                birikenBuyukZiplamaMiktariArtisMiktari = 0f;
-               
                 player.GetComponent<Player>().StateMachine.ChangeState(player.GetComponent<Player>().IdleState);
             });
         });
-     
     }
     public void Yemek()
     {

@@ -162,6 +162,8 @@ public class UIController : MonoBehaviour
         sequence.Append(kucukEvrim.transform.GetChild(2).GetComponent<CanvasGroup>().DOFade(0, 0.2f));
         sequence.Append(kucukEvrim.transform.GetChild(1).GetComponent<CanvasGroup>().DOFade(0, 0.2f));
         sequence.Append(kucukEvrim.transform.GetChild(0).GetComponent<CanvasGroup>().DOFade(0, 0.2f));
+        sequence.AppendCallback(() => player.GetComponent<Player>().StateMachine.ChangeState(player.GetComponent<Player>().IdleState));
+        sequence.AppendCallback(() => evrim.CheckEvrim());
         sequence.Play();
     }
     

@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     public GameObject canvas;
     public GameObject TarilEffect;
     public Slider infoslider;
-    public SpriteRenderer visual;
+    public GameObject visual;
     [SerializeField]
     private Transform WallCheck;
     [SerializeField]
