@@ -161,6 +161,7 @@ public class PlayerBuyukZiplama : PlayerState
 
     private void Zipla()
     {
+        
         if (facing == 0)
         {
           
@@ -190,6 +191,7 @@ public class PlayerBuyukZiplama : PlayerState
         finalvelo = ((playerData.buyukziplamavelo+playerData.buyukziplamaUpragevelo) * ((holdtime) / (float)playerData.maxHoldTime));
         player.SetVelocity(playerData.buyukziplamavelo * (finalvelo), dashDirection.normalized);
         player.DashDirectionIndicator.gameObject.SetActive(false);
+        SoundManager.instance.PlayZiplamaSesi();
     }
     Transform transformvar;
     public void parenayarla(Transform parentt)
