@@ -78,7 +78,7 @@ public class Evrim : MonoBehaviour
                 return;
             }
         }
-        
+
         acildurum = false;
         int secilen = 0;
         if (evrimno == 1)
@@ -135,6 +135,8 @@ public class Evrim : MonoBehaviour
         }
         if (simdikievrim != secilenevrim)
         {
+            olumsayisi++;
+            UIController.instance.UpdateJenarasyon(olumsayisi);
             UIController.instance.PokemonAnimasyon(simdikievrim.sprite, secilenevrim.sprite);
             simdikievrim = secilenevrim;
         }
@@ -157,7 +159,7 @@ public class Evrim : MonoBehaviour
         birikenBuyukZiplamaMiktariArtisMiktari = 0f;
         UIController.instance.UpdateEvrimIcinGerekenDnaText(3 - buElToplananDnaSayisi);
         player.GetComponent<Player>().StateMachine.ChangeState(player.GetComponent<Player>().IdleState);
-     // UIController.instance.KucukEvrimGecir();
+        // UIController.instance.KucukEvrimGecir();
     }
 
     //Check Evrim
@@ -177,7 +179,7 @@ public class Evrim : MonoBehaviour
         //    UIController.instance.UpdateEvrimIcinGerekenDnaText(3 - buElToplananDnaSayisi);
         //}
     }
-    bool acildurum=false;
+    bool acildurum = false;
     public void CollectDna()
     {
         buElToplananDnaSayisi++;
@@ -205,7 +207,7 @@ public class Evrim : MonoBehaviour
         player.transform.position = respawnpos.position;
         UIController.instance.UpdateEvrimIcinGerekenDnaText(3 - buElToplananDnaSayisi);
     }
-    public int olumsayisi=1;
+    public int olumsayisi = 1;
     public void oldun()
     {
         olumsayisi++;
@@ -237,7 +239,7 @@ public class Evrim : MonoBehaviour
         yield return new WaitForSeconds(10f);
         UIController.instance.PokemonAnimasyon(simdikievrim.sprite, bitissprite);
         yield return new WaitForSeconds(1.9f);
-        //bitis Ekrani
+        //bitis Ekrani buraya  yaz
     }
     public void Yemek()
     {

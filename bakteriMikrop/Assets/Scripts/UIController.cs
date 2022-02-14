@@ -227,6 +227,7 @@ public class UIController : MonoBehaviour
 
         var suankiPokemon = pokemonPanel.transform.GetChild(0).GetComponent<RectTransform>();
         var upgradePokemon = pokemonPanel.transform.GetChild(1).GetComponent<RectTransform>();
+      
         suankiPokemon.GetComponent<Image>().sprite = sp1;
         upgradePokemon.GetComponent<Image>().sprite = sp2;
         Sequence sequence = DOTween.Sequence();
