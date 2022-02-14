@@ -142,7 +142,9 @@ public class Evrim : MonoBehaviour
         }
         else
         {
-            oldun();
+            UIController.instance.KucukEvrimGecir();
+            olumsayisi++;
+            UIController.instance.UpdateJenarasyon(olumsayisi);
         }
         //olumsayisi++;
         //UIController.instance.UpdateJenarasyon(olumsayisi);
