@@ -26,10 +26,12 @@ public class Toplanabilir : MonoBehaviour
             }
             else if (sonDNA)
             {
+                SoundManager.instance.PlayDnaToplamaSesi();
                 evrim.oyunbitis();
             }
             else
             {
+                SoundManager.instance.PlayDnaToplamaSesi();
                 evrim.Yemek();
                 Instantiate(yemekparticle,transform.position,Quaternion.identity);
             }
