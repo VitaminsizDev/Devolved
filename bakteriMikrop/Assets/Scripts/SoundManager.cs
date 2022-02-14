@@ -27,6 +27,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip[] geriKapanmaSesi;
     public AudioClip[] pokemonBaslangicSesi;
     public AudioClip[] pokemonBitmeSesi;
+    public AudioClip[] ZiplamaSesi;
     
     //Awake
     private void Awake()
@@ -104,5 +105,11 @@ public class SoundManager : MonoBehaviour
     {
         //Play a random sound from the array of sounds
         sfxSource.PlayOneShot(pokemonBitmeSesi[Random.Range(0, pokemonBitmeSesi.Length)], sfxVolume);
+    }
+    
+    public void PlayZiplamaSesi()
+    {
+        //Play a random sound from the array of sounds
+        sfxSource.PlayOneShot(ZiplamaSesi[Random.Range(0, ZiplamaSesi.Length)], sfxVolume);
     }
 }
