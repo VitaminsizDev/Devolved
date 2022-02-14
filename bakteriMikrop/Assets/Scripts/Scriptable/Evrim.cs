@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Rendering.Universal;
 using DG.Tweening;
 using UnityEngine.Rendering;
-
+using TMPro;
 [System.Serializable]
 public class evrim
 {
@@ -45,11 +46,13 @@ public class Evrim : MonoBehaviour
     public Sprite bitissprite;
     public Color birisrengi;
     public GameObject evrimbtn;
+    public TextMeshProUGUI textMesh;
     private void Awake()
     {
 
         ResetEvrim();
         simdikievrim = birinciEvrim[0];
+        textMesh.gameObject.SetActive(false);
     }
 
     //Start
@@ -63,7 +66,8 @@ public class Evrim : MonoBehaviour
         UIController.instance.UpdateEvrimIcinGerekenDnaText(3 - buElToplananDnaSayisi);
 
     }
-
+    bool evrim2;
+    bool evrim3;
     //Evrim Gecir
     public void EvrimGecir()
     {
@@ -99,6 +103,17 @@ public class Evrim : MonoBehaviour
         }
         else if (evrimno == 2)
         {
+            if (!evrim2)
+            {
+                textMesh.gameObject.SetActive(true);
+                textMesh.text = "Ziplama Acildý Space Tusu";
+                evrim2 = true;
+            }
+            else
+            {
+                textMesh.gameObject.SetActive(false);
+
+            }
             for (int i = 0; i < ikinciEvrim.Count; i++)
             {
                 if (toplamyemek >= ikinciEvrim[i].yemekSayisi)
@@ -116,6 +131,16 @@ public class Evrim : MonoBehaviour
         }
         else if (evrimno == 3)
         {
+            if (!evrim3)
+            {
+                textMesh.gameObject.SetActive(true);
+                textMesh.text = "Duvara Tutunma Acildi";
+                evrim3 = true;
+            }
+            else
+            {
+                textMesh.gameObject.SetActive(false);
+            }
             UIController.instance.evrimIcinGerekenDnaText.gameObject.SetActive(false);
             for (int i = 0; i < sonEvrim.Count; i++)
             {
@@ -243,6 +268,7 @@ public class Evrim : MonoBehaviour
         UIController.instance.PokemonAnimasyon(simdikievrim.sprite, bitissprite);
         yield return new WaitForSeconds(1.9f);
         //bitis Ekrani buraya  yaz
+        SceneManager.LoadScene(1);
     }
     public void Yemek()
     {

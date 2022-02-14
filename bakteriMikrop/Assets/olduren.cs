@@ -13,7 +13,7 @@ public class olduren : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("öldün");
+            SoundManager.instance.PlayPopSesi();
             evrim.EvrimGecir();
         }
     }
