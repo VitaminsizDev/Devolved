@@ -54,6 +54,13 @@ public class Evrim : MonoBehaviour
         simdikievrim = birinciEvrim[0];
         textMesh.gameObject.SetActive(false);
     }
+    private void Update()
+    {
+        //if (Input.GetKeyDown(KeyCode.R))
+        //{
+        //    EvrimGecir();
+        //}
+    }
 
     //Start
     private void Start()
