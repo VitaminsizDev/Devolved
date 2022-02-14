@@ -47,13 +47,14 @@ public class PlayerSuzulme : PlayerState
         base.Exit();
         suzulsq.Pause();
         player.suzulme.Stop();
+        SoundManager.instance.suzulmesesikapa();
 
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-
+        SoundManager.instance.suzulmesesi();
         toplamgezme += (playerData.UpgradedHareketHizi + playerData.baseHareketHizi) * Time.deltaTime;
 
 

@@ -14,6 +14,7 @@ public class SoundManager : MonoBehaviour
     
     [Header("Obje Referans")]
     public AudioSource sfxSource;
+    public AudioSource sfxSource2;
     public AudioSource musicSource;
     
     [Header("Sesler")]
@@ -28,7 +29,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip[] pokemonBaslangicSesi;
     public AudioClip[] pokemonBitmeSesi;
     public AudioClip[] ZiplamaSesi;
-    
+    public AudioClip suzulme;
     //Awake
     private void Awake()
     {
@@ -111,5 +112,21 @@ public class SoundManager : MonoBehaviour
     {
         //Play a random sound from the array of sounds
         sfxSource.PlayOneShot(ZiplamaSesi[Random.Range(0, ZiplamaSesi.Length)], sfxVolume);
+    }
+    public void suzulmesesi()
+    {
+        if (!sfxSource2.isPlaying)
+        {
+            sfxSource2.volume = sfxVolume;
+            sfxSource2.clip = suzulme;
+            sfxSource2.Play();
+        }
+       
+    }
+    public void suzulmesesikapa()
+    {
+        sfxSource2.volume = sfxVolume;
+        sfxSource2.clip = null;
+        sfxSource2.Stop();
     }
 }
