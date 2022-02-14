@@ -72,7 +72,7 @@ public class Evrim : MonoBehaviour
         {
             if (birikenpuanHareketArtisMiktari == 0)
             {
-                Debug.Log("a");
+               
                 oldun();
 
                 return;
@@ -142,9 +142,10 @@ public class Evrim : MonoBehaviour
         }
         else
         {
-            UIController.instance.KucukEvrimGecir();
-            olumsayisi++;
-            UIController.instance.UpdateJenarasyon(olumsayisi);
+            // UIController.instance.KucukEvrimGecir();
+            oldun();
+            //olumsayisi++;
+            //UIController.instance.UpdateJenarasyon(olumsayisi);
         }
         //olumsayisi++;
         //UIController.instance.UpdateJenarasyon(olumsayisi);
