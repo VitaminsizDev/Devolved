@@ -113,6 +113,7 @@ public class SoundManager : MonoBehaviour
         //Play a random sound from the array of sounds
         sfxSource.PlayOneShot(ZiplamaSesi[Random.Range(0, ZiplamaSesi.Length)], sfxVolume);
     }
+
     public void suzulmesesi()
     {
         if (!sfxSource2.isPlaying)
@@ -129,4 +130,19 @@ public class SoundManager : MonoBehaviour
         sfxSource2.clip = null;
         sfxSource2.Stop();
     }
+
+    
+    //Mute Music
+    public void MuteMusic()
+    {
+        musicSource.mute = !musicSource.mute;
+    }
+    
+    //Mute SFX
+    public void MuteSFX()
+    {
+        sfxSource.mute = !sfxSource.mute;
+    }
+    
+
 }
