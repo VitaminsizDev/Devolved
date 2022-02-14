@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class olduren : MonoBehaviour
 {
-
+    Evrim evrim;
+    private void Awake()
+    {
+        evrim = GameObject.FindObjectOfType<Evrim>();
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            GameObject.FindObjectOfType<Evrim>().EvrimGecir();
+            Debug.Log("öldün");
+            evrim.EvrimGecir();
         }
     }
 }

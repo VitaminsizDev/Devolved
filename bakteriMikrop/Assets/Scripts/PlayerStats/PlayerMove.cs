@@ -7,7 +7,7 @@ public class PlayerMove : PlayerState
     Tween moveTweener;
     public PlayerMove(Player player, PlayerStateMachine stateMachine, BacteriaStats playerData) : base(player, stateMachine, playerData)
     {
-        moveTweener = player.visual.transform.DOScale(new Vector3(1f - xInput * 0.9f, 1f + yInput * 0.9f, 1f), 1f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
+        moveTweener = player.visual.transform.DOScale(new Vector3(1.2f, 1.2f, 1f), 1f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
         //Dont play moveTweener on start
         moveTweener.Pause();
     }

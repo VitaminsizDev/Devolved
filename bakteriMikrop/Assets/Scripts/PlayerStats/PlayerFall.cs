@@ -48,7 +48,7 @@ public class PlayerFall : PlayerState
             if (player.CurrentVelocity.y<0f)
             {
                 player.visual.transform.DOScaleY(Mathf.MoveTowards(player.visual.transform.localScale.y, 1.3f, Time.deltaTime), Time.deltaTime);
-                player.visual.transform.DOScaleX(Mathf.MoveTowards(player.visual.transform.localScale.x, 0.6f, Time.deltaTime), Time.deltaTime);
+                player.visual.transform.DOScaleX(Mathf.MoveTowards(player.visual.transform.localScale.x, 0.7f, Time.deltaTime), Time.deltaTime);
             }
            
             player.SetVelocityX(Mathf.MoveTowards(player.CurrentVelocity.x, playerData.baseHareketHizi * xInput, Time.deltaTime * 5f));
@@ -60,7 +60,7 @@ public class PlayerFall : PlayerState
             else if (isGrounded)
             {
                 player.land.Play();
-                player.visual.transform.DOPunchScale(Vector3.one * 0.5f, 0.1f, 20, 5);
+               // player.visual.transform.DOPunchScale(Vector3.one * 0.5f, 0.1f, 20, 5);
                 stateMachine.ChangeState(player.IdleState);
             }
             else if (player.duvartutun && isTouchingWall && player.FacingDirection == xInput && !player.Ground && player.duvarstate.tutun)

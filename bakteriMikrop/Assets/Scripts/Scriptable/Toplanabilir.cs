@@ -5,6 +5,7 @@ using UnityEngine;
 public class Toplanabilir : MonoBehaviour
 {
     public bool isDna = true;
+    public bool sonDNA = false;
     //Private Evrim find in scene GameObject Scripts
     private Evrim evrim => FindObjectOfType<Evrim>();
     public GameObject yemekparticle;
@@ -22,6 +23,10 @@ public class Toplanabilir : MonoBehaviour
                 SoundManager.instance.PlayDnaToplamaSesi();
                 Instantiate(DNAparticle, transform.position, Quaternion.identity);
                 //this.gameObject.SetActive(false);
+            }
+            else if (sonDNA)
+            {
+                evrim.oyunbitis();
             }
             else
             {

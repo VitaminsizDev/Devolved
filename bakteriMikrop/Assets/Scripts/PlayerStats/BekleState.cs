@@ -11,6 +11,12 @@ public class BekleState : PlayerState
     {
         base.Enter();
         player.SetVelocityZero();
+        player.RB.gravityScale = 0f;
+    }
+    public override void Exit()
+    {
+        base.Exit();
+        player.RB.gravityScale = 1f;
     }
 
 }

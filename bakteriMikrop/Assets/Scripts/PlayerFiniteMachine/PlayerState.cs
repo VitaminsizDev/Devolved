@@ -43,7 +43,7 @@ public class PlayerState
         isExitingState = false;
 
         sq = DOTween.Sequence();
-        player.visual.transform.DOScale(1f, 0.1f);
+        //player.visual.transform.DOScale(player.size, 0.1f);
     }
 
     public virtual void Exit()

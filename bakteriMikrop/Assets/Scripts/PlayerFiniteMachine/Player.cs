@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
 
 
     //components
+    public Vector2 size=Vector2.one;
     public ParticleSystem move; 
     public ParticleSystem land; 
     public ParticleSystem suzulme;
@@ -112,17 +113,17 @@ public class Player : MonoBehaviour
     public RaycastHit2D info;
     public bool Ground
     {
-        get => Physics2D.OverlapCircle(GroundCheck.position, playerData.groundCheckRadius, playerData.whatIsGround);
+        get => Physics2D.OverlapCircle(new Vector2(transform.position.x, transform.position.y - (size.y / 2)), playerData.groundCheckRadius, playerData.whatIsGround);
     }
 
     public bool WallFront
     {
-        get => Physics2D.Raycast(WallCheck.position, Vector2.right * FacingDirection, playerData.wallCheckDistance, playerData.whatIsGround);
+        get => Physics2D.Raycast(transform.position, Vector2.right * FacingDirection, (size.y / 2)+0.2f, playerData.whatIsGround);
     }
 
     public bool WallBack
     {
-        get => Physics2D.Raycast(WallCheck.position, Vector2.right * -FacingDirection, playerData.wallCheckDistance, playerData.whatIsGround);
+        get => Physics2D.Raycast(WallCheck.position, Vector2.right * -FacingDirection, (size.y / 2) + 0.2f, playerData.whatIsGround);
     }
     //public Transform groundtransform
     //{
@@ -199,9 +200,14 @@ public class Player : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(GroundCheck.position, playerData.groundCheckRadius);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(WallCheck.position, new Vector3(WallCheck.position.x + playerData.wallCheckDistance, WallCheck.position.y));
+        if (colider!=null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(new Vector2(transform.position.x, transform.position.y - (size.y / 2)), playerData.groundCheckRadius);
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(WallCheck.position, new Vector2(transform.position.x + (size.x / 2) + 0.1f, transform.position.y));
+        }
+       
+       
     }
 }

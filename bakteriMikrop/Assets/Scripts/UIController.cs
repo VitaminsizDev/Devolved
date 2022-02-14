@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering;
@@ -10,23 +11,25 @@ public class UIController : MonoBehaviour
 {
     //SingleTon
     public static UIController instance;
-    
+
     [Header("Script Referanslar")]
     public GameObject player;
     public Evrim evrim;
     public Volume postProcessing;
-    
+
     //Public
     public TextMeshProUGUI evrimIcinGerekenDnaText;
+    public TextMeshProUGUI Jenerasyon;
     public TMP_ColorGradient evrimIcinGerekenDnaColor;
     public GameObject evrimSecmeEkrani;
     public GameObject kucukEvrim;
     public CanvasGroup arkaPlan;
     public GameObject pokemonPanel;
-    
+
     private Tween evrimHazirSallaDnaTween;
+    private Tween jenerasyonTween;
     private Tween evrimPaneliHepAcikTween;
-    
+
     private Vignette vignette;
 
     //Awake
@@ -41,26 +44,26 @@ public class UIController : MonoBehaviour
             Destroy(instance);
             instance = this;
         }
-        
+
         //Setup Tweens
-        evrimHazirSallaDnaTween = evrimIcinGerekenDnaText.transform.DORotate(new Vector3(0,0,-6f), 0.45f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutElastic);
+        evrimHazirSallaDnaTween = evrimIcinGerekenDnaText.transform.DORotate(new Vector3(0, 0, -6f), 0.45f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutElastic);
+        jenerasyonTween = Jenerasyon.transform.DORotate(new Vector3(0, 0, -6f), 0.45f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutElastic);
         evrimPaneliHepAcikTween = evrimIcinGerekenDnaText.transform.DOScale(new Vector3(1.05f, 1.05f, 1.05f), 0.45f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
         evrimPaneliHepAcikTween.Restart();
-        
+
         //Setup Vignette
         vignette = postProcessing.profile.components[0] as Vignette;
     }
-    
+
     //Update
     private void Update()
     {
         //On ESC Button Click call pokemonAnimasyon
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            PokemonAnimasyon();
-        }
+
+        // PokemonAnimasyon();
+
     }
-    
+
     //
     public void UpdateEvrimIcinGerekenDnaText(int dna)
     {
@@ -71,41 +74,57 @@ public class UIController : MonoBehaviour
             // Reset rotation
             evrimIcinGerekenDnaText.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
-        
+
         evrimIcinGerekenDnaText.transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0.2f), 0.5f);
         evrimIcinGerekenDnaText.color = new Color32(23, 190, 187, 255);
         evrimIcinGerekenDnaText.colorGradientPreset = null;
-        evrimIcinGerekenDnaText.text = "Evrime "+dna.ToString()+" DNA Daha";
-        if(dna <= 0)
+        evrimIcinGerekenDnaText.text = "Evrime " + dna.ToString() + " DNA Daha";
+        if (dna <= 0)
         {
             //If evrimHazirSallaDnaTween is not playing, play it
-            if(!evrimHazirSallaDnaTween.IsPlaying())
+            if (!evrimHazirSallaDnaTween.IsPlaying())
             {
-                evrimIcinGerekenDnaText.transform.rotation = Quaternion.Euler(0,0,6f);
+                evrimIcinGerekenDnaText.transform.rotation = Quaternion.Euler(0, 0, 6f);
                 evrimHazirSallaDnaTween.Restart();
             }
-            
+
             //Toggle color gradient on evrimIcinGerekenDnaText
             evrimIcinGerekenDnaText.colorGradientPreset = evrimIcinGerekenDnaColor;
             evrimIcinGerekenDnaText.color = Color.white;
             evrimIcinGerekenDnaText.text = "Evrim Hazır!";
         }
     }
-    
+    public void UpdateJenarasyon(int dna)
+    {
+        //If tween is playing, stop it
+        if (jenerasyonTween.IsPlaying())
+        {
+            jenerasyonTween.Pause();
+            // Reset rotation
+            Jenerasyon.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+
+        Jenerasyon.transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0.2f), 0.5f);
+        Jenerasyon.color = new Color32(23, 190, 187, 255);
+        Jenerasyon.colorGradientPreset = null;
+        Jenerasyon.text = "Jenerasyon : " + dna.ToString();
+
+    }
+
     //Evrim Secim Ekrani
     public void EvrimSecimEkraniAc()
     {
-        evrimSecmeEkrani.transform.rotation = Quaternion.Euler(0,0,-1f);
-        Tween panelRotate = evrimSecmeEkrani.transform.DORotate(new Vector3(0,0,0.05f), 3f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
+        evrimSecmeEkrani.transform.rotation = Quaternion.Euler(0, 0, -1f);
+        Tween panelRotate = evrimSecmeEkrani.transform.DORotate(new Vector3(0, 0, 0.05f), 3f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
         Tween panelScale = evrimSecmeEkrani.transform.DOScale(new Vector3(1.02f, 1.02f, 1.02f), 1.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
         panelRotate.Restart();
         panelScale.Restart();
         evrimIcinGerekenDnaText.text = "Evrim Zamanı!!";
         evrimSecmeEkrani.SetActive(true);
-        
+
         Transform secmePanel = evrimSecmeEkrani.transform.GetChild(0).Find("SecmePanel");
         Transform secButon = evrimSecmeEkrani.transform.Find("EvrimSecButon");
-        
+
         //Sequence
         Sequence sequence = DOTween.Sequence();
         sequence.AppendCallback(() => VignetteAcKapa(true));
@@ -118,7 +137,7 @@ public class UIController : MonoBehaviour
         sequence.AppendCallback(() => secButon.gameObject.SetActive(true));
         sequence.Play();
     }
-    
+
     public void EvrimSecimEkraniKapat()
     {
         Sequence sequence = DOTween.Sequence();
@@ -129,7 +148,7 @@ public class UIController : MonoBehaviour
         sequence.AppendCallback(() => VignetteAcKapa(false));
         sequence.Join(arkaPlan.DOFade(0, 0.5f));
         sequence.AppendCallback(() => evrimSecmeEkrani.SetActive(false));
-        
+
         sequence.Play();
     }
 
@@ -137,23 +156,24 @@ public class UIController : MonoBehaviour
     {
         evrimIcinGerekenDnaText.text = "Evrim Zamanı!!";
         kucukEvrim.SetActive(true);
-        
+
+
         //Sequence
         Sequence sequence = DOTween.Sequence();
         sequence.AppendCallback(() => VignetteAcKapa(true));
         sequence.Append(arkaPlan.DOFade(1, 1f));
         sequence.AppendCallback(() => SoundManager.instance.PlayKucukEvrilmeSesi());
-        sequence.Join(kucukEvrim.transform.DOScale(new Vector3(1,1,1), 0.75f).SetEase(Ease.OutElastic));
+        sequence.Join(kucukEvrim.transform.DOScale(new Vector3(1, 1, 1), 0.75f).SetEase(Ease.OutElastic));
         sequence.AppendCallback(() => SoundManager.instance.PlayPopSesi());
         sequence.Join(kucukEvrim.transform.GetChild(0).GetComponent<CanvasGroup>().DOFade(1, 0.5f));
         sequence.AppendCallback(() => SoundManager.instance.PlayPopSesi());
         sequence.Join(kucukEvrim.transform.GetChild(1).GetComponent<CanvasGroup>().DOFade(1, 0.5f));
         sequence.AppendCallback(() => SoundManager.instance.PlayPopSesi());
         sequence.Join(kucukEvrim.transform.GetChild(2).GetComponent<CanvasGroup>().DOFade(1, 0.5f));
-        
+
         sequence.AppendInterval(2f);
         sequence.AppendCallback(() => SoundManager.instance.PlayGeriKapanmaSesi());
-        sequence.Join(kucukEvrim.transform.DOScale(new Vector3(0,0,0), 0.75f).SetEase(Ease.Linear));
+        sequence.Join(kucukEvrim.transform.DOScale(new Vector3(0, 0, 0), 0.75f).SetEase(Ease.Linear));
         sequence.AppendCallback(() => evrim.Respawn());
         sequence.AppendCallback(() => VignettePosBul());
         sequence.AppendCallback(() => VignetteAcKapa(false));
@@ -166,45 +186,49 @@ public class UIController : MonoBehaviour
         sequence.AppendCallback(() => evrim.CheckEvrim());
         sequence.Play();
     }
-    
+
     public void ClickEffect(Transform target)
     {
         target.DOShakeScale(0.2f, new Vector3(0.15f, 0.15f, 0.15f));
     }
-    
+
     //Vignette Pos Bul
     public void VignettePosBul()
     {
         #region VignettePos
 
         Vector3 screenPos = Camera.main.WorldToScreenPoint(player.transform.position);
-        Vector2 screenPosScale = new Vector2(screenPos.x /Screen.width, screenPos.y/Screen.height);
+        Vector2 screenPosScale = new Vector2(screenPos.x / Screen.width, screenPos.y / Screen.height);
         vignette.center.value = screenPosScale;
 
         #endregion
     }
-    
+
     public void VignetteAcKapa(bool ac)
     {
         VignettePosBul();
-        if(ac) DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 1, 1.3f);
+        if (ac) DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 1, 1.3f);
         else DOTween.To(() => vignette.intensity.value, x => vignette.intensity.value = x, 0, 0.7f);
     }
 
-    public void PokemonAnimasyon()
+    public void PokemonAnimasyon(Sprite sp1, Sprite sp2)
     {
         /*Tween panelScale = evrimSecmeEkrani.transform.DOScale(new Vector3(1.05f, 1.05f, 1), 1f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
         Tween panelRotate = evrimSecmeEkrani.transform.DORotate(new Vector3(0, 0, 3), 2).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
         panelScale.Pause();
         panelRotate.Pause();*/
         //Find child with name "SecmePanel"
+        evrimSecmeEkrani.SetActive(true);
+        evrimSecmeEkrani.GetComponent<CanvasGroup>().alpha = 1f;
         Transform secmePanel = evrimSecmeEkrani.transform.GetChild(0).Find("SecmePanel");
         Transform pokemonAnimPanel = evrimSecmeEkrani.transform.GetChild(0).Find("PokemonAnim");
         Transform secButon = evrimSecmeEkrani.transform.Find("EvrimSecButon");
-        
-        
+
+
         var suankiPokemon = pokemonPanel.transform.GetChild(0).GetComponent<RectTransform>();
         var upgradePokemon = pokemonPanel.transform.GetChild(1).GetComponent<RectTransform>();
+        suankiPokemon.GetComponent<Image>().sprite = sp1;
+        upgradePokemon.GetComponent<Image>().sprite = sp2;
         Sequence sequence = DOTween.Sequence();
         sequence.AppendCallback(() => pokemonAnimPanel.gameObject.SetActive(true));
         sequence.AppendCallback(() => secButon.gameObject.SetActive(false));
@@ -214,11 +238,11 @@ public class UIController : MonoBehaviour
         sequence.AppendCallback(() => SoundManager.instance.PlayPokemonBaslangicSesi());
         sequence.Join(suankiPokemon.DOLocalMove(Vector2.zero, 2f).SetEase(Ease.OutBounce));
         sequence.Join(upgradePokemon.DOLocalMove(Vector2.zero, 2f).SetEase(Ease.OutBounce));
-        sequence.Join(upgradePokemon.DOScale(new Vector3(0,0,0), 2.5f).SetEase(Ease.InFlash));
-        sequence.Join(suankiPokemon.DOScale(new Vector3(0,0,0), 2.5f).SetEase(Ease.InFlash));
+        sequence.Join(upgradePokemon.DOScale(new Vector3(0, 0, 0), 2.5f).SetEase(Ease.InFlash));
+        sequence.Join(suankiPokemon.DOScale(new Vector3(0, 0, 0), 2.5f).SetEase(Ease.InFlash));
         sequence.AppendCallback(() => suankiPokemon.gameObject.SetActive(false));
         sequence.AppendCallback(() => SoundManager.instance.PlayPokemonBitmeSesi());
-        sequence.Join(upgradePokemon.DOScale(new Vector3(1,1,0), 0.3f).SetEase(Ease.Linear));
+        sequence.Join(upgradePokemon.DOScale(new Vector3(1, 1, 0), 0.3f).SetEase(Ease.Linear));
         /*sequence.Append(evrimSecmeEkrani.transform.DORotate(new Vector3(0, 0, -3), 1).SetEase(Ease.Linear));
         sequence.AppendCallback(() => panelScale.Play());
         sequence.AppendCallback(() => panelRotate.Play());*/
@@ -226,7 +250,9 @@ public class UIController : MonoBehaviour
         sequence.AppendCallback(() => EvrimSecimEkraniKapat());
         sequence.Join(pokemonAnimPanel.GetComponent<CanvasGroup>().DOFade(1, 0.2f));
         sequence.AppendCallback(() => pokemonAnimPanel.gameObject.SetActive(false));
+        // sequence.AppendCallback(() => player.GetComponent<Player>().StateMachine.ChangeState(player.GetComponent<Player>().IdleState));
         sequence.Play();
+
 
     }
 }

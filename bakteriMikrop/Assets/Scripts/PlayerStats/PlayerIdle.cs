@@ -7,7 +7,7 @@ public class PlayerIdle : PlayerState
     Tween idleTween;
     public PlayerIdle(Player player, PlayerStateMachine stateMachine, BacteriaStats playerData) : base(player, stateMachine, playerData)
     {
-        idleTween = player.visual.transform.DOScale(new Vector3(1.1f,1.1f,1f),1f).SetLoops(-1,LoopType.Yoyo).SetEase(Ease.Linear);
+        idleTween = player.visual.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 1f).SetLoops(-1,LoopType.Yoyo).SetEase(Ease.Linear);
         idleTween.Pause();
     }
 

@@ -33,7 +33,7 @@ public class PlayerSuzulme : PlayerState
     {
         base.Enter();
         suzulsq = DOTween.Sequence();
-        suzulsq.Append(player.visual.transform.DOScale((Vector3.one * 0.9f),0.6f)).Append(player.visual.transform.DOScale((Vector3.one * 1.1f), 0.6f));
+        suzulsq.Append(player.visual.transform.DOScale(new Vector3(0.95f, 0.95f, 0.95f), 0.1f)).Append(player.visual.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 0.1f));
         suzulsq.SetLoops(-1, LoopType.Yoyo);
         suzulsq.Play();
         sonPosition = player.transform.position;
