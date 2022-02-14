@@ -273,7 +273,7 @@ public class Evrim : MonoBehaviour
     {
         yield return new WaitForSeconds(10f);
         UIController.instance.PokemonAnimasyon(simdikievrim.sprite, bitissprite);
-        yield return new WaitForSeconds(1.9f);
+        yield return new WaitForSeconds(6f);
         //bitis Ekrani buraya  yaz
         SceneManager.LoadScene(1);
     }
