@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6680140914598907537}
   - component: {fileID: 6680140914598907538}
   - component: {fileID: 6680140914598907539}
+  - component: {fileID: 6773834090972111548}
   m_Layer: 0
   m_Name: Dna
   m_TagString: Untagged
@@ -124,8 +125,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDna: 1
+  sonDNA: 0
   yemekparticle: {fileID: 7423711709158552139, guid: 7d99b02cd3723f146b30c46e89cf845b, type: 3}
   DNAparticle: {fileID: 4887702460181645747, guid: 4862f1d7e24002e4eaf1062d9d8af416, type: 3}
+--- !u!114 &6773834090972111548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6680140914598907540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e97a9e6cfe640b488a076602c5f8c98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doRotate: 1
+  rotateDuration: 3
+  rotateAmount: {x: 0, y: 0, z: 180}
+  doRotateLoop: 1
+  rotateLoopType: 1
+  rotateLoopCount: -1
+  rotateEase: 10
+  isRotateRelative: 0
+  doMove: 0
+  moveDuration: 1
+  moveAmount: {x: 0, y: 0, z: 0}
+  doMoveLoop: 0
+  moveLoopType: 1
+  moveLoopCount: -1
+  moveEase: 1
+  isMoveRelative: 0
+  doScale: 1
+  scaleDuration: 3
+  scaleAmount: {x: 0.9, y: 0.9, z: 0.9}
+  doScaleLoop: 1
+  scaleLoopType: 1
+  scaleLoopCount: -1
+  scaleEase: 1
+  isScaleRelative: 0
 --- !u!1001 &2413556076094540183
 PrefabInstance:
   m_ObjectHideFlags: 0

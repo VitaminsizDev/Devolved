@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5889291069723570919}
   - component: {fileID: 5889291069723570916}
   - component: {fileID: 5889291069723570917}
+  - component: {fileID: 5326428036934023997}
   m_Layer: 0
   m_Name: Yemek
   m_TagString: Untagged
@@ -124,8 +125,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDna: 0
+  sonDNA: 0
   yemekparticle: {fileID: 7423711709158552139, guid: 7d99b02cd3723f146b30c46e89cf845b, type: 3}
   DNAparticle: {fileID: 0}
+--- !u!114 &5326428036934023997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5889291069723570914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e97a9e6cfe640b488a076602c5f8c98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doRotate: 1
+  rotateDuration: 1
+  rotateAmount: {x: 0, y: 0, z: 180}
+  doRotateLoop: 1
+  rotateLoopType: 1
+  rotateLoopCount: -1
+  rotateEase: 1
+  isRotateRelative: 0
+  doMove: 0
+  moveDuration: 1
+  moveAmount: {x: 0, y: 1, z: 0}
+  doMoveLoop: 0
+  moveLoopType: 1
+  moveLoopCount: -1
+  moveEase: 1
+  isMoveRelative: 0
+  doScale: 1
+  scaleDuration: 2
+  scaleAmount: {x: 0.8, y: 0.8, z: 0.8}
+  doScaleLoop: 1
+  scaleLoopType: 1
+  scaleLoopCount: -1
+  scaleEase: 1
+  isScaleRelative: 0
 --- !u!1001 &3764822969663276249
 PrefabInstance:
   m_ObjectHideFlags: 0
